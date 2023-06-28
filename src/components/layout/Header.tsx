@@ -34,7 +34,6 @@ const Header = (props: HeaderProps) => {
    }else{
     parameter = path
    }
-    
     const keys = Object.keys(alternateLanguageFields!);
     const updatedLanguagesData = [...keys, parameter];
     setLanguagesData(updatedLanguagesData  as never[]);

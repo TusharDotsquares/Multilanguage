@@ -1,0 +1,11 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import "assets/css/global.css";
+@import "assets/css/header.css";
+@import "assets/css/footer.css";
+@import "assets/css/locator.css";
+@import "assets/css/location.css";
+@import "assets/css/content.css";
+

@@ -68,7 +68,7 @@ export const transformProps: TransformProps<TemplateProps> = async (data) => {
  * take on the form: featureName/entityId
  */
 export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
-  return __meta.mode === "development" ? `${document.locale}/${document.slug}` : `${document.locale}/index.html`;
+  return __meta.mode === "development" ? `${document.locale}/${document.slug}` : `${document.locale == "en"?"index.html":`${document.locale}`}`
 };
 
 /**

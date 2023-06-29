@@ -11,6 +11,7 @@ interface ListLayoutProps {
   meta: TemplateMeta;
   message?: string;
   locale?: string;
+  relativePrefixToRoot?:string
   showNoRecordMessage?: boolean;
 }
 
@@ -18,6 +19,7 @@ function ListLayout({
   meta,
   locale,
   message = "",
+  relativePrefixToRoot,
   showNoRecordMessage = false,
 }: ListLayoutProps) {
   const { isFilterEnable, noRecordFound } = useContext(SearchContext);
@@ -35,7 +37,7 @@ function ListLayout({
       {showNoRecordMessage && noRecordFound && (
         <NoRecordFound message={message} />
       )}
-      <LocationList meta={meta} />
+      <LocationList meta={meta} relativePrefixToRoot={relativePrefixToRoot}/>
       <ViewMore />
     </div>
   );

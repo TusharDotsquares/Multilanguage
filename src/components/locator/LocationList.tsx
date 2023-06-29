@@ -5,8 +5,9 @@ import { TemplateMeta } from "../../types";
 import { LocationResult } from "../../types/Locator";
 type LocationListProps = {
   meta?: TemplateMeta;
+  relativePrefixToRoot?:string
 };
-const LocationList = ({ meta }: LocationListProps) => {
+const LocationList = ({ meta,relativePrefixToRoot }: LocationListProps) => {
   const {
     locations,
     isLoading,
@@ -24,10 +25,10 @@ const LocationList = ({ meta }: LocationListProps) => {
     <div className="listing">
       {showViewportLocations && isUpdateListAccordingMarkers
         ? viewportLocations.map((location: LocationResult) => (
-            <LocationCard key={location.id} location={location} meta={meta} />
+            <LocationCard key={location.id} relativePrefixToRoot={relativePrefixToRoot} location={location} meta={meta} />
           ))
         : locations.map((location: LocationResult) => (
-            <LocationCard key={location.id} location={location} meta={meta} />
+            <LocationCard key={location.id} relativePrefixToRoot ={relativePrefixToRoot} location={location} meta={meta} />
           ))}
 
       {pageLoading && (

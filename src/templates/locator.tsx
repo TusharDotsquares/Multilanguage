@@ -116,12 +116,12 @@ interface LocatorTemplateProps extends TemplateRenderProps {
 const Locator: Template<LocatorTemplateProps> = ({
   document,
   __meta,
-  path
+  path,
+  relativePrefixToRoot
 }: LocatorTemplateProps) => {
   const { _site, meta,alternateLanguageFields } = document;
   const {i18n } = useTranslation();
   i18n.changeLanguage(`${document.meta.locale}`);
-console.log('document', document)
   const searcher = provideHeadless({
     experienceKey: YEXT_PUBLIC_ANSWER_SEARCH_EXPERIENCE_KEY,
     apiKey: YEXT_PUBLIC_ANSWER_SEARCH_API_KEY,
@@ -178,6 +178,7 @@ console.log('document', document)
               <ListLayout
                 showNoRecordMessage={true}
                 meta={__meta}
+                relativePrefixToRoot={relativePrefixToRoot}
                 locale={document.meta.locale}
               />
             </section>

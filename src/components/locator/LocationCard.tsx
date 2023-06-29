@@ -11,11 +11,12 @@ import { useTranslation } from "react-i18next";
 type LocationCardProps = {
   location: LocationResult;
   meta?: TemplateMeta;
-  relativePrefixToRoot?:string
+  locale?:string
+  extention:string
 };
 
-const LocationCard = ({ location ,relativePrefixToRoot}: LocationCardProps) => {
-  console.log('relativePrefixToRoot', relativePrefixToRoot)
+const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
+  console.log('relativePrefixToRoot',extention)
   const {
     setInfoWindowContent,
     infoWindowContent,
@@ -84,7 +85,7 @@ const LocationCard = ({ location ,relativePrefixToRoot}: LocationCardProps) => {
     >
       <div className="icon-row">
         <div className="icon addressIcon"></div>
-        <Link className="location-name" href={`${relativePrefixToRoot}/${url}`}>
+        <Link className="location-name" href={`${locale}/${url}${extention}`}>
           {location.rawData.name}
         </Link>
         <Address
@@ -92,7 +93,7 @@ const LocationCard = ({ location ,relativePrefixToRoot}: LocationCardProps) => {
         />
       </div>
       <div className="button-bx-detail">
-        <Link className="button link" href={`/${url}`}>
+        <Link className="button link" href={`${locale}/${url}${extention}`}>
           {t("View Details")}
         </Link>
         <Link

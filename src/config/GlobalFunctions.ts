@@ -45,9 +45,11 @@ export const updatelocale = (locale: string, props: updatelocaleProps,document?:
     let path: string | null = props.path.split("/")[1];
     if(props.meta.mode === "development"){
       path = "/" + locale + "/" + path + "?locale=" + locale;
-    }else{
-    path = "/" + locale;
-  }
+    }else if(locale == "en"){
+         path = "/" 
+      }else{
+        path = "/" + locale;
+      }
     // path = path + "?country=" + country;
     return (window.location.href = path);
   } else if (props.template == "continents") {

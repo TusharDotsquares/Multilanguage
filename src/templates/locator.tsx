@@ -178,8 +178,8 @@ const Locator: Template<LocatorTemplateProps> = ({
               <ListLayout
                 showNoRecordMessage={true}
                 meta={__meta}
-                relativePrefixToRoot={relativePrefixToRoot}
                 locale={document.meta.locale}
+                extention={".html"}
               />
             </section>
           </main>

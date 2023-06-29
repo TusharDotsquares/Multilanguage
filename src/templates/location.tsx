@@ -58,6 +58,7 @@ export const config: TemplateConfig = {
       primary: false,
     },
   },
+  alternateLanguageFields: ["slug", "name", "id"],
 };
 
 export const getPath: GetPath<TemplateProps> = ({ document }) => {
@@ -136,7 +137,7 @@ const Location: Template<LocationTemplateProps> = ({
   breadcrumbs,
   path
 }: LocationTemplateProps) => {
-  const { meta, _site, slug } = document;
+  const { meta, _site, slug,alternateLanguageFields } = document;
   const {i18n } = useTranslation();
   i18n.changeLanguage(`${document.meta.locale}`);
   return (
@@ -151,7 +152,9 @@ const Location: Template<LocationTemplateProps> = ({
             _site={_site}
             meta={__meta}
             path={path}
-            template="Location"
+            document={document}
+            alternateLanguageFields={alternateLanguageFields}
+            template="location"
             locale={meta.locale}
             devLink={slug}
           >

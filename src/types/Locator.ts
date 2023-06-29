@@ -13,9 +13,9 @@ export interface LocatorDocument {
 }
 export type Alternatelng= {
   [language: string]: {
-    id: string;
-    name: string;
-    slug?: string;
+    id: string| undefined;
+    name: string| undefined;
+    slug?: string| undefined;
   };
 }
 

@@ -4,6 +4,7 @@ import { Coordinate } from "../components/google-map/SearchProvider";
 import { AddressType } from "@yext/pages/components";
 import { DirectoryChild } from "./DirectoryChild";
 import { E164Number } from "libphonenumber-js/types";
+import { Alternatelng } from "./Locator";
 
 export type MapTypes = "google" | "mapbox";
 export type AutocompleteTypes = "google" | "mapbox" | "yext";
@@ -36,6 +37,7 @@ export interface CountryDocument {
 
 export interface StateDocument {
   name: string;
+  id:string;
   slug: string;
   meta: EntityMeta;
   _site: SiteData;
@@ -43,6 +45,7 @@ export interface StateDocument {
 }
 
 export interface CityDocument {
+  id:string;
   name: string;
   slug: string;
   meta: EntityMeta;
@@ -61,6 +64,7 @@ export interface LocationDocument {
   hours: Hours;
   additionalHoursText: string;
   yextDisplayCoordinate: Coordinate;
+  alternateLanguageFields?:Alternatelng
   googlePlaceId: string;
   mainPhone: E164Number;
   dm_directoryParents: DirectoryParent[];

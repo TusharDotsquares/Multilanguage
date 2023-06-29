@@ -1,8 +1,8 @@
 import * as React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { SiteData, TemplateMeta } from "../../types";
-import { Alternatelng } from "../../types/Locator";
+import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
+import { Alternatelng, LocatorDocument } from "../../types/Locator";
 
 export interface PageLayoutProps {
   children?: React.ReactNode;
@@ -11,6 +11,7 @@ export interface PageLayoutProps {
   alternateLanguageFields?:Alternatelng;
   template?: string;
   path:string;
+  document?:LocationDocument|CityDocument|StateDocument|LocatorDocument
   devLink?: string;
   locale?: string;
 }
@@ -23,6 +24,7 @@ const PageLayout = ({
   template,
   path,
   devLink,
+  document,
   locale,
 }: PageLayoutProps) => {
   return (
@@ -32,6 +34,7 @@ const PageLayout = ({
         meta={meta}
         alternateLanguageFields={alternateLanguageFields}
         template={template}
+        document={document}
         path={path}
         locale={locale}
         devLink={devLink}

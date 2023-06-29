@@ -1,8 +1,9 @@
 import * as React from "react";
+import { ChangeEvent } from 'react';
 import { Link } from "@yext/pages/components";
-import { SiteData, TemplateMeta } from "../../types";
+import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
 import logo from "../../assets/images/logo.jpg";
-import { Alternatelng } from "../../types/Locator";
+import { Alternatelng, LocatorDocument } from "../../types/Locator";
 import { slugify, updatelocale } from "../../config/GlobalFunctions";
 
 const navigation = [
@@ -15,26 +16,19 @@ interface HeaderProps {
   meta: TemplateMeta;
   template?: string;
   path: string;
+  document?:LocationDocument|CityDocument|StateDocument|LocatorDocument 
   alternateLanguageFields?: Alternatelng;
   devLink?: string;
   locale?: string;
 }
 
 const Header = (props: HeaderProps) => {
-  const { meta, alternateLanguageFields } = props;
+  const { meta, locale,alternateLanguageFields,document } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
   React.useEffect(() => {
-    let parameter;
-    const searchParams = new URLSearchParams(window.location.search);
-    const url = new URL(window.location.href);
-   const path = url.pathname.substr(1);
-   if(meta.mode==="development"){
-    parameter = searchParams.get('locale');
-   }else{
-    parameter = path
-   }
-    const keys = Object.keys(alternateLanguageFields!);
+    const parameter = locale;
+    const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];
     const updatedLanguagesData = [...keys, parameter];
     setLanguagesData(updatedLanguagesData  as never[]);
     setSelectedValue(parameter);
@@ -44,10 +38,13 @@ const Header = (props: HeaderProps) => {
    setSelectedValue(selectedValue);
   },[selectedValue])
 
-  const updateUrl = (e: any) => {
+  const updateUrl = (e: ChangeEvent<HTMLSelectElement>) => {
+
     setSelectedValue(e.target.value);
-    const language = slugify(e.target.value);
-    // updatelocale(language, props);
+    const language = slugify(e.target.value); 
+    console.log('props', props)
+    updatelocale(language, props,document);
+
   };
 console.log('selectedValue', selectedValue)
   return (

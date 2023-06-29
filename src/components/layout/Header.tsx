@@ -31,22 +31,18 @@ const Header = (props: HeaderProps) => {
     const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];
     const updatedLanguagesData = [...keys, parameter];
     setLanguagesData(updatedLanguagesData  as never[]);
-    setSelectedValue(parameter);
+    setSelectedValue(locale!);
   }, []);
 
-  React.useEffect(()=>{
-   setSelectedValue(selectedValue);
-  },[selectedValue])
 
   const updateUrl = (e: ChangeEvent<HTMLSelectElement>) => {
-
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
     console.log('props', props)
     updatelocale(language, props,document);
 
   };
-console.log('selectedValue', selectedValue)
+
   return (
     <header className={`site-header ${meta.mode}`}>
       <div className="container">

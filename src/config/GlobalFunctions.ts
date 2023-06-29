@@ -43,12 +43,10 @@ export function slugify(slugString: string) {
 export const updatelocale = (locale: string, props: updatelocaleProps,document?:LocationDocument|CityDocument|StateDocument|LocatorDocument) => {
   if (props.template == "locatorSearch") {
     let path: string | null = props.path.split("/")[1];
-    if (path) {
     if(props.meta.mode === "development"){
       path = "/" + locale + "/" + path + "?locale=" + locale;
     }else{
-    path = "/" + locale + "/" + path;
-    }
+    path = "/" + locale;
   }
     // path = path + "?country=" + country;
     return (window.location.href = path);

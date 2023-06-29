@@ -14,7 +14,8 @@ import PageLayout from "../components/layout/PageLayout";
 import "../index.css";
 import { Link } from "@yext/pages/components";
 import { DirectoryChild } from "../types/DirectoryChild";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 export const config: TemplateConfig = {
   stream: {
     $id: "region",
@@ -101,19 +102,44 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
 interface StateTemplateProps extends TemplateRenderProps {
   __meta: TemplateMeta;
   document: StateDocument;
+  path:string
 }
+const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 
 const State: Template<StateTemplateProps> = ({
   document,
   __meta,
+  path
 }: StateTemplateProps) => {
-  const { meta, _site, slug, dm_directoryChildren } = document;
-
+  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents } = document;
+   let url="";
+   if (__meta.mode === "development") {
+    url= document.slug;
+  } else if (
+   dm_directoryParents &&
+   dm_directoryParents != "undefined"
+  ) {
+    const parent: string[] = [];
+   dm_directoryParents?.map(
+      (i: { meta: EntityMeta; slug: string; name: string }) => {
+        parent.push(i.slug);
+      }
+    );
+    url= `${parent.join("/")}/${document.slug.toString()}.html`;
+  } else {
+    url= `${document.slug.toString()}.html`;
+  }
   return (
+    <Router location={url}>
     <div id="main">
+    <Routes>
+    <Route
+            path={url}
+            element={
       <PageLayout
         _site={_site}
         meta={__meta}
+        path={path}
         template="country"
         locale={meta.locale}
         devLink={slug}
@@ -134,8 +160,10 @@ const State: Template<StateTemplateProps> = ({
               );
             })}
         </div>
-      </PageLayout>
+      </PageLayout>}/>
+      </Routes>
     </div>
+    </Router>
   );
 };
 export default State;

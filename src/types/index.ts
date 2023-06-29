@@ -33,6 +33,8 @@ export interface CountryDocument {
   slug: string;
   meta: EntityMeta;
   _site: SiteData;
+  dm_directoryChildren:DirectoryChild[]
+  dm_directoryParents:DirectoryParent[]
 }
 
 export interface StateDocument {
@@ -42,6 +44,7 @@ export interface StateDocument {
   meta: EntityMeta;
   _site: SiteData;
   dm_directoryChildren: DirectoryChild[];
+  dm_directoryParents:DirectoryParent[]
 }
 
 export interface CityDocument {

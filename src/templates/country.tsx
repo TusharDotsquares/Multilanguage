@@ -15,7 +15,8 @@ import PageLayout from "../components/layout/PageLayout";
 import "../index.css";
 import { Link } from "@yext/pages/components";
 import { DirectoryChild } from "../types/DirectoryChild";
-
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 /**
  * Required when Knowledge Graph data is used for a template.
  */
@@ -111,18 +112,45 @@ interface CountryTemplateProps extends TemplateRenderProps {
   __meta: TemplateMeta;
   document: CountryDocument;
 }
-
+const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const country: Template<CountryTemplateProps> = ({
   document,
   __meta,
+  path
 }: CountryTemplateProps) => {
-  const { _site, meta, slug, dm_directoryChildren } = document;
+  const { _site, meta, slug, dm_directoryChildren,dm_directoryParents } = document;
+  let url ="";
+  if (__meta.mode === "development") {
+    url= document.slug;
+  } else {
+    if (
+     dm_directoryParents &&
+     dm_directoryParents != "undefined"
+    ) {
+      const parent: string[] = [];
+      dm_directoryParents?.map(
+        (i: { meta: EntityMeta; slug: string; name: string }) => {
+          parent.push(i.slug);
+        }
+      );
+      url= `${parent.join("/")}/${document.slug.toString()}.html`;
+    } else {
+      url= `${document.slug.toString()}.html`;
+    }
+  }
 
   return (
+    
+    <Router location={url}>
     <div id="main">
+    <Routes>
+    <Route
+            path={url}
+            element={
       <PageLayout
         _site={_site}
         meta={__meta}
+        path={path}
         template="country"
         locale={meta.locale}
         devLink={slug}
@@ -143,8 +171,10 @@ const country: Template<CountryTemplateProps> = ({
               );
             })}
         </div>
-      </PageLayout>
+      </PageLayout>}/>
+      </Routes>
     </div>
+    </Router>
   );
 };
 

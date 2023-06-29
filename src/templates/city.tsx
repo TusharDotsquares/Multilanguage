@@ -18,6 +18,8 @@ import {
 import PageLayout from "../components/layout/PageLayout";
 import "../index.css";
 import { Address, Link } from "@yext/pages/components";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 
 export const config: TemplateConfig = {
   stream: {
@@ -113,17 +115,42 @@ interface CityTemplateProps extends TemplateRenderProps {
   __meta: TemplateMeta;
   document: CityDocument;
 }
-
+const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const City: Template<CityTemplateProps> = ({
   document,
   __meta,
+  path
 }: CityTemplateProps) => {
-  const { meta, _site, slug, dm_directoryChildren } = document;
+  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents } = document;
+  let url ="";
+  if(__meta.mode === "development"){
+    url =`${document?.slug.toString()}`;
+  }
+  else if (
+   dm_directoryParents &&
+   dm_directoryParents != "undefined"
+  ) {
+    const parent: string[] = [];
+    dm_directoryParents?.map(
+      (i: { meta: EntityMeta; slug: string; name: string }) => {
+        parent.push(i.slug);
+      }
+    );
+    url= `${parent.join("/")}/${document.slug.toString()}.html`;
+  } else {
+    url= `${document.slug.toString()}.html`;
+  }
   return (
+    <Router location={url}>
     <div id="main">
+    <Routes>
+        <Route
+            path={url}
+            element={
       <PageLayout
         _site={_site}
         meta={__meta}
+        path={path}
         template="country"
         locale={meta.locale}
         devLink={slug}
@@ -157,8 +184,10 @@ const City: Template<CityTemplateProps> = ({
               })}
           </div>
         </div>
-      </PageLayout>
+      </PageLayout>}/>
+      </Routes>
     </div>
+    </Router>
   );
 };
 export default City;

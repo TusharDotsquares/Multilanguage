@@ -9,7 +9,6 @@ import {
   HeadConfig,
   TransformProps,
 } from "@yext/pages";
-import { fetch } from "@yext/pages/util";
 import favicon from "../assets/images/favicon.ico";
 import { EntityMeta, LocationDocument, TemplateMeta } from "../types";
 import PageLayout from "../components/layout/PageLayout";
@@ -135,6 +134,7 @@ const Location: Template<LocationTemplateProps> = ({
   document,
   __meta,
   breadcrumbs,
+  path
 }: LocationTemplateProps) => {
   const { meta, _site, slug } = document;
   const {i18n } = useTranslation();
@@ -150,7 +150,8 @@ const Location: Template<LocationTemplateProps> = ({
           <PageLayout
             _site={_site}
             meta={__meta}
-            template="country"
+            path={path}
+            template="Location"
             locale={meta.locale}
             devLink={slug}
           >

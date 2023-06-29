@@ -21,7 +21,7 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const { meta, _site, alternateLanguageFields } = props;
+  const { meta, alternateLanguageFields } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
   React.useEffect(() => {
@@ -46,8 +46,8 @@ const Header = (props: HeaderProps) => {
 
   const updateUrl = (e: any) => {
     setSelectedValue(e.target.value);
-    let language = slugify(e.target.value);
-    updatelocale(language, props);
+    const language = slugify(e.target.value);
+    // updatelocale(language, props);
   };
 console.log('selectedValue', selectedValue)
   return (
@@ -75,9 +75,9 @@ console.log('selectedValue', selectedValue)
             <div>
                 <label htmlFor="dropdown">Select an option: </label>
                 <select id="dropdown" value={selectedValue} onChange={updateUrl}>
-                {languagesdata.map((res) => {
+                {languagesdata.map((res,index) => {
                 return (  
-                <option value={res}>{res}</option>
+                <option key={index} value={res}>{res}</option>
                 );
                 })}
                 </select>

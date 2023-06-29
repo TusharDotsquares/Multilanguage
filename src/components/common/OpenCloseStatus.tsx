@@ -13,7 +13,7 @@ export default function OpenCloseStatus(props: OpenCloseProps) {
   const h = new HoursManipulator(props.hours);
   const currentInterval = h.getCurrentInterval();
   const isOpenNow = currentInterval?.isOpened();
-  const {t,i18n} = useTranslation();
+  const {t} = useTranslation();
   let openedAt = "";
   if (h.hours.reopenDate) {
     openedAt = "Temprary Closed";

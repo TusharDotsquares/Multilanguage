@@ -164,7 +164,7 @@ const Hours = (props: HoursProps) => {
   }
 
   console.log("hoursDays", hoursDays);
-  const {t,i18n} = useTranslation();
+  const {t} = useTranslation();
   return (
     <React.Fragment>
       {isClient && (

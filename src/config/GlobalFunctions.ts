@@ -2,8 +2,8 @@ import defaultMarker from "../assets/images/default-marker.png";
 import hoverMarker from "../assets/images/hover-marker.png";
 import userMarker from "../assets/images/user-marker.png";
 import cluster from "../assets/images/cluster.png";
-import { LocationResult } from "../types/Locator";
-import { TemplateMeta } from "../types";
+import { Alternatelng, LocationResult } from "../types/Locator";
+import { SiteData, TemplateMeta } from "../types";
 import { BreadcrumbItem } from "../components/common/Breadcrumbs";
 import { AddressType } from "@yext/pages/components";
 import { Coordinate } from "../components/google-map/SearchProvider";
@@ -14,6 +14,16 @@ type LinkParams = {
   locale?: string;
   devLink?: string;
 };
+interface updatelocaleProps {
+  _site?: SiteData;
+  meta: TemplateMeta;
+  template?: string;
+  path: string;
+  alternateLanguageFields?: Alternatelng;
+  devLink?: string;
+  locale?: string;
+  alternateSlug?:any
+}
 export function slugify(slugString: string) {
   slugString.toLowerCase().toString();
   slugString = slugString.replace(/[&/\\#^+()$~%.'":*?<>{}!@]/, "");
@@ -24,93 +34,93 @@ export function slugify(slugString: string) {
   slugString = slugString.replaceAll("'", "");
   return slugString.toLowerCase();
 }
-export const updatelocale = (locale: any, props: any) => {
-  if (props.template == "locatorSearch") {
-    let path: any = props.path.split("/");
-    path = path && path[1];
-    if(props.meta.mode === "development"){
-      path = "/" + locale + "/" + path + "?locale=" + locale;
-    }else{
-    path = "/" + locale + "/" + path;
-    }
-    // path = path + "?country=" + country;
-    return (window.location.href = path);
-  } else if (props.template == "continents") {
-    let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    var url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: any = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      return (window.location.href = newUrl);
-    }
-  } else if (props.template == "location") {
-    let path: any = "";
+// export const updatelocale = (locale: string, props: updatelocaleProps) => {
+//   if (props.template == "locatorSearch") {
+//     let path: string | null = props.path.split("/");
+//     path = path && path[1];
+//     if(props.meta.mode === "development"){
+//       path = "/" + locale + "/" + path + "?locale=" + locale;
+//     }else{
+//     path = "/" + locale + "/" + path;
+//     }
+//     // path = path + "?country=" + country;
+//     return (window.location.href = path);
+//   } else if (props.template == "continents") {
+//     const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
+//     const url = new URL(window.location.href);
+//     // url.searchParams.set("country", country);
+//     let newUrl: string | null = null;
+//     for (const locales of localesAr) {
+//       if (url.href.includes("/" + locales + "/")) {
+//         newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
+//       }
+//     }
+//     if (newUrl) {
+//       return (window.location.href = newUrl);
+//     }
+//   } else if (props.template == "location") {
+//     let path: string = "";
 
-    for (const key in props.alternateSlug) {
-      if (key == locale) {
-        let t = props.alternateSlug;
-        if (t[key].slug) {
-          path =
-            "/" + locale + "/" + t[key].slug + ".html"
-        } else {
-          let slug = t[key].id + " " + t[key].name;
-          slug = slugify(slug);
+//     for (const key in props.alternateSlug) {
+//       if (key == locale) {
+//         let t = props.alternateSlug;
+//         if (t[key].slug) {
+//           path =
+//             "/" + locale + "/" + t[key].slug + ".html"
+//         } else {
+//           let slug = t[key].id + " " + t[key].name;
+//           slug = slugify(slug);
 
-          path = "/" + locale + "/" + slug;
-          path = path + ".html"
-        }
+//           path = "/" + locale + "/" + slug;
+//           path = path + ".html"
+//         }
 
-        return (window.location.href = path);
-      }
-    }
-    for (const key in props.alternateSlug) {
-      if (key != locale) {
-        let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-        var url = new URL(window.location.href);
-        // url.searchParams.set("country", country);
+//         return (window.location.href = path);
+//       }
+//     }
+//     for (const key in props.alternateSlug) {
+//       if (key != locale) {
+//         let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
+//         var url = new URL(window.location.href);
+//         // url.searchParams.set("country", country);
 
-        for (const locales of localesAr) {
-          if (url.href.includes("/" + locales + "/")) {
-            path = url.href.replace("/" + locales + "/", "/" + locale + "/");
-          }
-        }
+//         for (const locales of localesAr) {
+//           if (url.href.includes("/" + locales + "/")) {
+//             path = url.href.replace("/" + locales + "/", "/" + locale + "/");
+//           }
+//         }
 
-        return (window.location.href = path);
-      }
-    }
-  } else if (props.template == "city") {
-    let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    var url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: any = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      return (window.location.href = newUrl);
-    }
-  } else if (props.template == "country") {
-    let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    var url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: any = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      return (window.location.href = newUrl);
-    }
-  }
-};
+//         return (window.location.href = path);
+//       }
+//     }
+//   } else if (props.template == "city") {
+//     let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
+//     var url = new URL(window.location.href);
+//     // url.searchParams.set("country", country);
+//     let newUrl: any = null;
+//     for (const locales of localesAr) {
+//       if (url.href.includes("/" + locales + "/")) {
+//         newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
+//       }
+//     }
+//     if (newUrl) {
+//       return (window.location.href = newUrl);
+//     }
+//   } else if (props.template == "country") {
+//     let localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
+//     var url = new URL(window.location.href);
+//     // url.searchParams.set("country", country);
+//     let newUrl: any = null;
+//     for (const locales of localesAr) {
+//       if (url.href.includes("/" + locales + "/")) {
+//         newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
+//       }
+//     }
+//     if (newUrl) {
+//       return (window.location.href = newUrl);
+//     }
+//   }
+// };
 
 export const getLink = ({
   link,

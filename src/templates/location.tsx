@@ -9,7 +9,7 @@ import {
   HeadConfig,
   TransformProps,
 } from "@yext/pages";
-import favicon from "../assets/images/favicon.ico";
+// import favicon from "../assets/images/favicon.ico";
 import { EntityMeta, LocationDocument, TemplateMeta } from "../types";
 import PageLayout from "../components/layout/PageLayout";
 import { withTranslation,useTranslation } from "react-i18next";
@@ -87,14 +87,14 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
     viewport:
       "width=device-width, initial-scale=1.0, maximum-scale=1, minimum-scale=1, user-scalable=0",
     tags: [
-      {
-        type: "link",
-        attributes: {
-          rel: "icon",
-          type: "image/png",
-          href: favicon,
-        },
-      },
+      // {
+      //   type: "link",
+      //   attributes: {
+      //     rel: "icon",
+      //     type: "image/png",
+      //     href: favicon,
+      //   },
+      // },
 
       {
         type: "meta",

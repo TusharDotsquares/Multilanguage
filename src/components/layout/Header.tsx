@@ -5,6 +5,7 @@ import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta }
 import logo from "../../assets/images/logo.jpg";
 import { Alternatelng, LocatorDocument } from "../../types/Locator";
 import { slugify, updatelocale } from "../../config/GlobalFunctions";
+import {useNavigate} from 'react-router-dom';
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -26,6 +27,7 @@ const Header = (props: HeaderProps) => {
   const { meta, locale,alternateLanguageFields,document } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
+  const navigate = useNavigate();
   React.useEffect(() => {
     const parameter = locale;
     const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];
@@ -39,7 +41,7 @@ const Header = (props: HeaderProps) => {
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
     console.log('props', props)
-    updatelocale(language, props,document);
+    updatelocale(language, props,document,navigate);
 
   };
 

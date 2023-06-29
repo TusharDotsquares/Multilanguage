@@ -25,7 +25,9 @@ import "../i18n";
 import { LocatorDocument } from "../types/Locator";
 import ListLayout from "../components/locator/ListLayout";
 import MapWrapper from "../components/google-map/MapWrapper";
-import { withTranslation,useTranslation } from "react-i18next";
+import { withTranslation, useTranslation } from "react-i18next";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 
 /**
  * Not required depending on your use case.
@@ -38,13 +40,20 @@ export const config: TemplateConfig = {
     filter: {
       entityIds: ["globaldata"],
     },
-    fields: ["id", "uid", "meta", "name", "slug","c_countryWithPrimaryAndSecondaryLanguage"],
+    fields: [
+      "id",
+      "uid",
+      "meta",
+      "name",
+      "slug",
+      "c_countryWithPrimaryAndSecondaryLanguage",
+    ],
     localization: {
-      locales: ["en","fr", "it", "ja", "de"],
+      locales: ["en", "fr", "it", "ja", "de"],
       primary: false,
     },
   },
-   alternateLanguageFields: ["slug", "name", "id"],
+  alternateLanguageFields: ["slug", "name", "id"],
 };
 
 /**
@@ -68,7 +77,9 @@ export const transformProps: TransformProps<TemplateProps> = async (data) => {
  * take on the form: featureName/entityId
  */
 export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
-  return __meta.mode === "development" ? `${document.locale}/${document.slug}` : `${document.locale == "en"?"index.html":`${document.locale}`}`
+  return __meta.mode === "development"
+    ? `${document.locale}/${document.slug}`
+    : `${document.locale == "en" ? "index.html" : `${document.locale}`}`;
 };
 
 /**
@@ -107,21 +118,22 @@ export const getHeadConfig: GetHeadConfig<
 interface LocatorTemplateProps extends TemplateRenderProps {
   __meta: TemplateMeta;
   document: LocatorDocument;
-  path:string;
+  path: string;
 }
 /**
  * This is the main template. It can have any name as long as it's the default export.
  * The props passed in here are the direct result from `transformProps`.
  */
+const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const Locator: Template<LocatorTemplateProps> = ({
   document,
   __meta,
   path,
-  relativePrefixToRoot
 }: LocatorTemplateProps) => {
-  const { _site, meta,alternateLanguageFields } = document;
-  const {i18n } = useTranslation();
+  const { _site, meta, alternateLanguageFields } = document;
+  const { i18n } = useTranslation();
   i18n.changeLanguage(`${document.meta.locale}`);
+  console.log("document", document);
   const searcher = provideHeadless({
     experienceKey: YEXT_PUBLIC_ANSWER_SEARCH_EXPERIENCE_KEY,
     apiKey: YEXT_PUBLIC_ANSWER_SEARCH_API_KEY,
@@ -135,58 +147,76 @@ const Locator: Template<LocatorTemplateProps> = ({
   });
 
   const [isMapView, setIsMapView] = React.useState(false);
+  const url: string =
+    __meta.mode === "development"
+      ? `${document.slug}`
+      : `${
+          document.meta.locale == "en"
+            ? "index.html"
+            : `${document.meta.locale}`
+        }`;
+
   return (
-    <SearchHeadlessProvider searcher={searcher}>
-      <SearchProvider
-        language={document.meta.locale}
-        defaultCoordinates={{
-          latitude: parseFloat(YEXT_PUBLIC_DEFAULT_LATITUDE),
-          longitude: parseFloat(YEXT_PUBLIC_DEFAULT_LONGITUDE),
-        }}
-        mapboxAccessToken={YEXT_PUBLIC_MAP_BOX_API_KEY}
-        googleApiKey={YEXT_PUBLIC_GOOGLE_API_KEY}
-        limit={parseInt(YEXT_PUBLIC_PAGE_LIMIT)}
-        autoLoadAllResult={true}
-        isUseAlternateResult={{ limit: 1, show: true }}
-        mapType="google"
-        autocompleteType="google"
-        isFilterEnable={false}
-        isUpdateListAccordingMarkers={true}
-      >
-        <PageLayout
-          _site={_site}
-          alternateLanguageFields={alternateLanguageFields}
-          meta={__meta}
-          path={path}
-          template="locatorSearch"
-          locale={meta.locale}
-        >
-          <main className="main-content">
-            <section className="listing-map" id="main">
-              <div className="mobile-view-map lg:hidden">
-                <button
-                  type="button"
-                  className="map-link"
-                  onClick={() => setIsMapView(!isMapView)}
-                >
-                  {isMapView ? "Hide Map" : "Show Map"}
-                </button>
-              </div>
-              <div className={`map-block ${isMapView ? "show" : ""}`}>
-                <MapWrapper _site={_site} />
-              </div>
-              <ListLayout
-                showNoRecordMessage={true}
+    <Router location={url}>
+      <SearchHeadlessProvider searcher={searcher}>
+        <Routes>
+          <Route
+            path={url}
+            element={
+              <SearchProvider
+              language={document.meta.locale}
+              defaultCoordinates={{
+                latitude: parseFloat(YEXT_PUBLIC_DEFAULT_LATITUDE),
+                longitude: parseFloat(YEXT_PUBLIC_DEFAULT_LONGITUDE),
+              }}
+              mapboxAccessToken={YEXT_PUBLIC_MAP_BOX_API_KEY}
+              googleApiKey={YEXT_PUBLIC_GOOGLE_API_KEY}
+              limit={parseInt(YEXT_PUBLIC_PAGE_LIMIT)}
+              autoLoadAllResult={true}
+              isUseAlternateResult={{ limit: 1, show: true }}
+              mapType="google"
+              autocompleteType="google"
+              isFilterEnable={false}
+              isUpdateListAccordingMarkers={true}
+            >
+              <PageLayout
+                _site={_site}
+                alternateLanguageFields={alternateLanguageFields}
                 meta={__meta}
-                locale={document.meta.locale}
-                extention={".html"}
-              />
-            </section>
-          </main>
-        </PageLayout>
-      </SearchProvider>
-    </SearchHeadlessProvider>
+                path={path}
+                template="locatorSearch"
+                locale={meta.locale}
+              >
+                <main className="main-content">
+                  <section className="listing-map" id="main">
+                    <div className="mobile-view-map lg:hidden">
+                      <button
+                        type="button"
+                        className="map-link"
+                        onClick={() => setIsMapView(!isMapView)}
+                      >
+                        {isMapView ? "Hide Map" : "Show Map"}
+                      </button>
+                    </div>
+                    <div className={`map-block ${isMapView ? "show" : ""}`}>
+                      <MapWrapper _site={_site} />
+                    </div>
+                    <ListLayout
+                      showNoRecordMessage={true}
+                      meta={__meta}
+                      locale={document.meta.locale}
+                      extention={".html"}
+                    />
+                  </section>
+                </main>
+              </PageLayout>
+            </SearchProvider>
+            }
+          />
+        </Routes>
+      </SearchHeadlessProvider>
+    </Router>
   );
 };
 
-export default  withTranslation()(Locator);
+export default withTranslation()(Locator);

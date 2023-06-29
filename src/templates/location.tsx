@@ -24,6 +24,8 @@ import NearByLocation from "../components/location/NearByLocation";
 import "../index.css";
 import { getBreadcrumb } from "../config/GlobalFunctions";
 import { NearByLocationResult } from "../types/Locator";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { StaticRouter } from "react-router-dom/server";
 
 export const config: TemplateConfig = {
   stream: {
@@ -130,7 +132,7 @@ interface LocationTemplateProps extends TransformData {
   __meta: TemplateMeta;
   document: LocationDocument;
 }
-
+const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const Location: Template<LocationTemplateProps> = ({
   document,
   __meta,
@@ -140,7 +142,28 @@ const Location: Template<LocationTemplateProps> = ({
   const { meta, _site, slug,alternateLanguageFields } = document;
   const {i18n } = useTranslation();
   i18n.changeLanguage(`${document.meta.locale}`);
+  let url ="";
+  if(__meta.mode === "development"){
+    url =`${document?.slug.toString()}`;
+  }
+  else if (
+    document.dm_directoryParents &&
+    document.dm_directoryParents != "undefined"
+  ) {
+    const parent: string[] = [];
+    document.dm_directoryParents?.map(
+      (i: { meta: EntityMeta; slug: string; name: string }) => {
+        parent.push(i.slug);
+      }
+    );
+    url= `${parent.join("/")}/${document.meta.locale}/${document.slug.toString()}.html`;
+  } else {
+    url = `${document.meta.locale}/${document?.slug.toString()}.html`;
+  }
+
+
   return (
+    <Router location={url}>
     <div id="main">
       <AnalyticsProvider
         templateData={{ document, __meta }}
@@ -148,6 +171,10 @@ const Location: Template<LocationTemplateProps> = ({
         enableTrackingCookie={YEXT_PUBLIC_ANALYTICS_ENABLE_TRACKING_COOKIE}
       >
         <AnalyticsScopeProvider name={document.name}>
+        <Routes>
+        <Route
+            path={url}
+            element={
           <PageLayout
             _site={_site}
             meta={__meta}
@@ -167,10 +194,13 @@ const Location: Template<LocationTemplateProps> = ({
               id={document.id}
               meta={__meta}
             />
-          </PageLayout>
+          </PageLayout>} />
+          </Routes>
         </AnalyticsScopeProvider>
       </AnalyticsProvider>
     </div>
+     </Router>
   );
+  
 };
 export default withTranslation()(Location);

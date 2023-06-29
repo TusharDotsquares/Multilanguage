@@ -2,11 +2,22 @@ import defaultMarker from "../assets/images/default-marker.png";
 import hoverMarker from "../assets/images/hover-marker.png";
 import userMarker from "../assets/images/user-marker.png";
 import cluster from "../assets/images/cluster.png";
-import { Alternatelng, LocationResult, LocatorDocument } from "../types/Locator";
-import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../types";
+import {
+  Alternatelng,
+  LocationResult,
+  LocatorDocument,
+} from "../types/Locator";
+import {
+  CityDocument,
+  LocationDocument,
+  SiteData,
+  StateDocument,
+  TemplateMeta,
+} from "../types";
 import { BreadcrumbItem } from "../components/common/Breadcrumbs";
 import { AddressType } from "@yext/pages/components";
 import { Coordinate } from "../components/google-map/SearchProvider";
+
 type LinkParams = {
   link: string;
   mode?: string;
@@ -14,6 +25,14 @@ type LinkParams = {
   locale?: string;
   devLink?: string;
 };
+// type UseLocationType = {
+//   pathname: string;
+//   search: string;
+//   state: any;
+//   hash: string;
+//   key: string;
+// };
+
 type SlugInfo = { slug?: string; id: string; name: string };
 
 interface AlternateSlug {
@@ -27,7 +46,7 @@ interface updatelocaleProps {
   alternateLanguageFields?: Alternatelng;
   devLink?: string;
   locale?: string;
-  alternateSlug?:AlternateSlug
+  alternateSlug?: AlternateSlug;
 }
 
 export function slugify(slugString: string) {
@@ -40,19 +59,24 @@ export function slugify(slugString: string) {
   slugString = slugString.replaceAll("'", "");
   return slugString.toLowerCase();
 }
-export const updatelocale = (locale: string, props: updatelocaleProps,document?:LocationDocument|CityDocument|StateDocument|LocatorDocument) => {
-  if (props.template == "locatorSearch") {
+export const updatelocale = (
+  locale: string,
+  props: updatelocaleProps,
+  document?: LocationDocument | CityDocument | StateDocument | LocatorDocument,
+  navigate: (value: string) => void,
+) => {
+  let redirectUrl = "";
+  if (props.template === "locatorSearch") {
     let path: string | null = props.path.split("/")[1];
-    if(props.meta.mode === "development"){
+    if (props.meta.mode === "development") {
       path = "/" + locale + "/" + path + "?locale=" + locale;
-    }else if(locale == "en"){
-         path = "/" 
-      }else{
-        path = "/" + locale;
-      }
-    // path = path + "?country=" + country;
-    return (window.location.href = path);
-  } else if (props.template == "continents") {
+    } else if (locale === "en") {
+      path = "/";
+    } else {
+      path = "/" + locale;
+    }
+    redirectUrl = path;
+  } else if (props.template === "continents") {
     const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
     const url = new URL(window.location.href);
     // url.searchParams.set("country", country);
@@ -63,38 +87,37 @@ export const updatelocale = (locale: string, props: updatelocaleProps,document?:
       }
     }
     if (newUrl) {
-      return (window.location.href = newUrl);
+      redirectUrl = newUrl;
     }
-  } else if (props.template == "location") {
-    let path  = "";
-    console.log('props', props)
-    const array:Alternatelng =props.alternateLanguageFields;
+  } else if (props.template === "location") {
+    let path = "";
+    console.log("props", props);
+    const array: Alternatelng = props.alternateLanguageFields;
     array[locale] = {
       id: document?.id,
       name: document?.name,
-      slug: document?.slug
+      slug: document?.slug,
     };
-    const updatedLanguagesData =  array;
-    console.log('updatedLanguagesData', updatedLanguagesData)
+    const updatedLanguagesData = array;
+    console.log("updatedLanguagesData", updatedLanguagesData);
     for (const key in updatedLanguagesData) {
-      if (key == locale) {
+      if (key === locale) {
         const t = updatedLanguagesData;
         if (t[key].slug) {
-          path =
-            "/" + locale + "/" + t[key].slug + ".html"
+          path = "/" + locale + "/" + t[key].slug + ".html";
         } else {
           let slug = t[key].id + " " + t[key].name;
           slug = slugify(slug);
 
           path = "/" + locale + "/" + slug;
-          path = path + ".html"
+          path = path + ".html";
         }
 
-        return (window.location.href = path);
+        redirectUrl = path;
       }
     }
     for (const key in updatedLanguagesData) {
-      if (key != locale) {
+      if (key !== locale) {
         const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
         const url = new URL(window.location.href);
         // url.searchParams.set("country", country);
@@ -104,39 +127,25 @@ export const updatelocale = (locale: string, props: updatelocaleProps,document?:
             path = url.href.replace("/" + locales + "/", "/" + locale + "/");
           }
         }
-
-        return (window.location.href = path);
+        redirectUrl = path;
       }
     }
-  } else if (props.template == "city") {
+  } else if (props.template === "city") {
     const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
     const url = new URL(window.location.href);
     // url.searchParams.set("country", country);
-    let newUrl: string|null = null;
+    let newUrl: string | null = null;
     for (const locales of localesAr) {
       if (url.href.includes("/" + locales + "/")) {
         newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
       }
     }
     if (newUrl) {
-      return (window.location.href = newUrl);
-    }
-  } else if (props.template == "country") {
-    const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    const url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: string|null = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      return (window.location.href = newUrl);
+      redirectUrl = newUrl;
     }
   }
+  return navigate(redirectUrl);
 };
-
 export const getLink = ({
   link,
   mode,

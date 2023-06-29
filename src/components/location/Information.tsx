@@ -76,13 +76,13 @@ const Information = ({ document, _site }: InformationProps) => {
           )}
         </div>
 
-        <div className="map-sec">
+        {/* <div className="map-sec">
           <LoadScript googleMapsApiKey={YEXT_PUBLIC_GOOGLE_API_KEY}>
             <GoogleMap center={coordinates} zoom={12}>
               <Marker position={coordinates} clickable={false} />
             </GoogleMap>
           </LoadScript>
-        </div>
+        </div> */}
       </div>
     </div>
   );

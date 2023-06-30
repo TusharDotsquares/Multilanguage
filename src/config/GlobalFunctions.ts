@@ -17,6 +17,7 @@ import {
 import { BreadcrumbItem } from "../components/common/Breadcrumbs";
 import { AddressType } from "@yext/pages/components";
 import { Coordinate } from "../components/google-map/SearchProvider";
+import { Navigate } from "../components/layout/Header";
 
 type LinkParams = {
   link: string;
@@ -63,7 +64,7 @@ export const updatelocale = (
   locale: string,
   props: updatelocaleProps,
   document?: LocationDocument | CityDocument | StateDocument | LocatorDocument,
-  navigate: (value: string) => void,
+  navigate: Navigate,
 ) => {
   let redirectUrl = "";
   if (props.template === "locatorSearch") {
@@ -144,12 +145,11 @@ export const updatelocale = (
       redirectUrl = newUrl;
     }
   }
+
   navigate(redirectUrl);
-  setTimeout(()=>{
-    window.location.reload();
-  },1000)
-  
+  navigate(0);
 };
+
 export const getLink = ({
   link,
   mode,

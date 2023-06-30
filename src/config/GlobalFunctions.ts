@@ -144,7 +144,8 @@ export const updatelocale = (
       redirectUrl = newUrl;
     }
   }
-  return navigate(redirectUrl);
+  navigate(redirectUrl);
+  window.location.reload();
 };
 export const getLink = ({
   link,

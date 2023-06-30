@@ -6,7 +6,10 @@ import logo from "../../assets/images/logo.jpg";
 import { Alternatelng, LocatorDocument } from "../../types/Locator";
 import { slugify, updatelocale } from "../../config/GlobalFunctions";
 import {useNavigate} from 'react-router-dom';
+import { NavigateFunction } from 'react-router-dom';
 
+// Define the type for navigate
+export type Navigate = NavigateFunction;
 const navigation = [
   { name: "Home", href: "/" },
   { name: "About", href: "#" },
@@ -27,7 +30,7 @@ const Header = (props: HeaderProps) => {
   const { meta, locale,alternateLanguageFields,document } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
-  const navigate = useNavigate();
+  const navigate:Navigate = useNavigate();
   React.useEffect(() => {
     const parameter = locale;
     const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];

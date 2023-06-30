@@ -145,7 +145,10 @@ export const updatelocale = (
     }
   }
   navigate(redirectUrl);
-  window.location.reload();
+  setTimeout(()=>{
+    window.location.reload();
+  },1000)
+  
 };
 export const getLink = ({
   link,

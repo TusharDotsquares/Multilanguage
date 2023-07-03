@@ -4,8 +4,8 @@ import { Address, Link } from "@yext/pages/components";
 import { LocationResult } from "../../types/Locator";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
-import { getDirectionUrl } from "../../config/GlobalFunctions";
-import { TemplateMeta } from "../../types";
+import { getDirectionUrl, slugify } from "../../config/GlobalFunctions";
+import { EntityMeta, TemplateMeta } from "../../types";
 import { useTranslation } from "react-i18next";
 
 type LocationCardProps = {
@@ -16,7 +16,6 @@ type LocationCardProps = {
 };
 
 const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
-  console.log('relativePrefixToRoot',extention)
   const {
     setInfoWindowContent,
     infoWindowContent,
@@ -24,7 +23,23 @@ const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
     hoveredLocation,
   } = React.useContext(SearchContext);
   const cardRef = React.useRef<HTMLDivElement>(null);
-  const url = location.rawData.slug;
+  let url = "";
+  if (
+    location.rawData.dm_directoryParents &&
+    location.rawData.dm_directoryParents != "undefined"
+  ) {
+    const parent: string[] = [];
+    location.rawData.dm_directoryParents?.slice(1).map(
+      (i: { meta: EntityMeta; slug: string; name: string }) => {
+        parent.push(slugify(i.name));
+      }
+    );
+    url= `${locale}/${parent.join("/")}/${location.rawData.slug.toString()}`;
+  } else {
+    url= `${location.rawData.slug.toString()}`;
+  }
+
+console.log('location.rawData', location.rawData)
   const {t} = useTranslation();
   const scrollIntoView = (element: HTMLDivElement, offset: number) => {
     const elementPosition = element.getBoundingClientRect().top;
@@ -85,7 +100,7 @@ const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
     >
       <div className="icon-row">
         <div className="icon addressIcon"></div>
-        <Link className="location-name" href={`${locale}/${url}${extention}`}>
+        <Link className="location-name" href={`${url}${extention}`}>
           {location.rawData.name}
         </Link>
         <Address
@@ -93,7 +108,7 @@ const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
         />
       </div>
       <div className="button-bx-detail">
-        <Link className="button link" href={`${locale}/${url}${extention}`}>
+        <Link className="button link" href={`${url}${extention}`}>
           {t("View Details")}
         </Link>
         <Link

@@ -51,10 +51,11 @@ export const config: TemplateConfig = {
       "dm_directoryChildren.yextDisplayCoordinate",
     ],
     localization: {
-      locales: ["en"],
+      locales:["en","fr", "it", "ja", "de"],
       primary: false,
     },
   },
+  alternateLanguageFields: ["slug", "name", "id"],
 };
 
 export const getPath: GetPath<TemplateProps> = ({ document }) => {
@@ -63,12 +64,12 @@ export const getPath: GetPath<TemplateProps> = ({ document }) => {
     document.dm_directoryParents != "undefined"
   ) {
     const parent: string[] = [];
-    document.dm_directoryParents?.map(
+    document.dm_directoryParents?.slice(1).map(
       (i: { meta: EntityMeta; slug: string; name: string }) => {
         parent.push(i.slug);
       }
     );
-    return `${parent.join("/")}/${document.slug.toString()}.html`;
+    return `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
   } else {
     return `${document.slug.toString()}.html`;
   }

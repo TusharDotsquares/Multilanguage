@@ -69,14 +69,14 @@ export const getPath: GetPath<TemplateProps> = ({ document }) => {
     document.dm_directoryParents != "undefined"
   ) {
     const parent: string[] = [];
-    document.dm_directoryParents?.map(
+    document.dm_directoryParents?.slice(1).map(
       (i: { meta: EntityMeta; slug: string; name: string }) => {
         parent.push(i.slug);
       }
     );
-    return `${parent.join("/")}/${document.meta.locale}/${document.slug.toString()}.html`;
+    return `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
   } else {
-    return `${document.locale}/${document?.slug.toString()}.html`;
+    return `${document.meta.locale}/${document?.slug.toString()}.html`;
   }
 };
 
@@ -124,7 +124,7 @@ type TransformData = TemplateRenderProps & {
 export const transformProps: TransformProps<TransformData> = async (data) => {
   const document = data.document as LocationDocument;
   const directoryParents = document.dm_directoryParents || [];
-  const breadcrumbs = getBreadcrumb(directoryParents, document, data.__meta);
+  const breadcrumbs = getBreadcrumb(directoryParents, document, data.__meta,false,1);
   return { ...data, breadcrumbs };
 };
 
@@ -161,7 +161,7 @@ const Location: Template<LocationTemplateProps> = ({
     url = `${document.meta.locale}/${document?.slug.toString()}.html`;
   }
 
-
+console.log('breadcrumbs', breadcrumbs)
   return (
     <Router location={url}>
     <div id="main">
@@ -185,7 +185,7 @@ const Location: Template<LocationTemplateProps> = ({
             locale={meta.locale}
             devLink={slug}
           >
-            <Breadcrumbs baseUrl="/" breadcrumbs={breadcrumbs} />
+            <Breadcrumbs baseUrl={`/${document.meta.locale}`} breadcrumbs={breadcrumbs} />
             <Information document={document} _site={_site} />
 
             <NearByLocation

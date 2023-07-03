@@ -17,6 +17,7 @@ import { Link } from "@yext/pages/components";
 import { DirectoryChild } from "../types/DirectoryChild";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
+import { slugify } from "../config/GlobalFunctions";
 /**
  * Required when Knowledge Graph data is used for a template.
  */
@@ -45,10 +46,11 @@ export const config: TemplateConfig = {
     },
     // The entity language profiles that documents will be generated for.
     localization: {
-      locales: ["en"],
+      locales:["en","fr", "it", "ja", "de"],
       primary: false,
     },
   },
+  alternateLanguageFields: ["slug", "name", "id"],
 };
 
 export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
@@ -60,12 +62,12 @@ export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
       document.dm_directoryParents != "undefined"
     ) {
       const parent: string[] = [];
-      document.dm_directoryParents?.map(
+      document.dm_directoryParents?.slice(1).map(
         (i: { meta: EntityMeta; slug: string; name: string }) => {
-          parent.push(i.slug);
+          parent.push(slugify(i.slug));
         }
       );
-      return `${parent.join("/")}/${document.slug.toString()}.html`;
+      return `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
     } else {
       return `${document.slug.toString()}.html`;
     }

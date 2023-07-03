@@ -72,6 +72,7 @@ export interface CityDocument {
   meta: EntityMeta;
   _site: SiteData;
   dm_directoryChildren: LocationDocument[];
+  dm_directoryParents:DirectoryParent[];
   alternateLanguageFields?:Alternatelng
 }
 

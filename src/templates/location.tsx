@@ -12,7 +12,7 @@ import {
 // import favicon from "../assets/images/favicon.ico";
 import { EntityMeta, LocationDocument, TemplateMeta } from "../types";
 import PageLayout from "../components/layout/PageLayout";
-import { withTranslation,useTranslation } from "react-i18next";
+import { withTranslation, useTranslation } from "react-i18next";
 import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
 import {
   AnalyticsProvider,
@@ -56,7 +56,7 @@ export const config: TemplateConfig = {
       "dm_directoryParents.dm_directoryParents.dm_directoryParents.meta.entityType",
     ],
     localization: {
-      locales: ["en","fr", "it", "ja", "de"],
+      locales: ["en", "fr", "it", "ja", "de"],
       primary: false,
     },
   },
@@ -69,12 +69,14 @@ export const getPath: GetPath<TemplateProps> = ({ document }) => {
     document.dm_directoryParents != "undefined"
   ) {
     const parent: string[] = [];
-    document.dm_directoryParents?.slice(1).map(
-      (i: { meta: EntityMeta; slug: string; name: string }) => {
+    document.dm_directoryParents
+      ?.slice(1)
+      .map((i: { meta: EntityMeta; slug: string; name: string }) => {
         parent.push(i.slug);
-      }
-    );
-    return `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
+      });
+    return `${document.meta.locale}/${parent.join(
+      "/"
+    )}/${document.slug.toString()}.html`;
   } else {
     return `${document.meta.locale}/${document?.slug.toString()}.html`;
   }
@@ -124,7 +126,13 @@ type TransformData = TemplateRenderProps & {
 export const transformProps: TransformProps<TransformData> = async (data) => {
   const document = data.document as LocationDocument;
   const directoryParents = document.dm_directoryParents || [];
-  const breadcrumbs = getBreadcrumb(directoryParents, document, data.__meta,false,1);
+  const breadcrumbs = getBreadcrumb(
+    directoryParents,
+    document,
+    data.__meta,
+    false,
+    1
+  );
   return { ...data, breadcrumbs };
 };
 
@@ -137,70 +145,73 @@ const Location: Template<LocationTemplateProps> = ({
   document,
   __meta,
   breadcrumbs,
-  path
+  path,
 }: LocationTemplateProps) => {
-  const { meta, _site, slug,alternateLanguageFields } = document;
-  const {i18n } = useTranslation();
+  const { meta, _site, slug, alternateLanguageFields } = document;
+  const { i18n } = useTranslation();
   i18n.changeLanguage(`${document.meta.locale}`);
-  let url ="";
-  if(__meta.mode === "development"){
-    url =`${document?.slug.toString()}`;
-  }
-  else if (
+  let url = "";
+  if (__meta.mode === "development") {
+    url = `${document?.slug.toString()}`;
+  } else if (
     document.dm_directoryParents &&
     document.dm_directoryParents != "undefined"
   ) {
     const parent: string[] = [];
-    document.dm_directoryParents?.map(
+    document.dm_directoryParents?.slice(1).map(
       (i: { meta: EntityMeta; slug: string; name: string }) => {
         parent.push(i.slug);
       }
     );
-    url= `${parent.join("/")}/${document.meta.locale}/${document.slug.toString()}.html`;
+    url = `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
   } else {
     url = `${document.meta.locale}/${document?.slug.toString()}.html`;
   }
 
-console.log('breadcrumbs', breadcrumbs)
+  console.log("breadcrumbs", breadcrumbs);
   return (
     <Router location={url}>
-    <div id="main">
-      <AnalyticsProvider
-        templateData={{ document, __meta }}
-        enableDebugging={YEXT_PUBLIC_ANALYTICS_ENABLE_DEBUGGING}
-        enableTrackingCookie={YEXT_PUBLIC_ANALYTICS_ENABLE_TRACKING_COOKIE}
-      >
-        <AnalyticsScopeProvider name={document.name}>
-        <Routes>
-        <Route
-            path={url}
-            element={
-          <PageLayout
-            _site={_site}
-            meta={__meta}
-            path={path}
-            document={document}
-            alternateLanguageFields={alternateLanguageFields}
-            template="location"
-            locale={meta.locale}
-            devLink={slug}
-          >
-            <Breadcrumbs baseUrl={`/${document.meta.locale}`} breadcrumbs={breadcrumbs} />
-            <Information document={document} _site={_site} />
+      <div id="main">
+        <AnalyticsProvider
+          templateData={{ document, __meta }}
+          enableDebugging={YEXT_PUBLIC_ANALYTICS_ENABLE_DEBUGGING}
+          enableTrackingCookie={YEXT_PUBLIC_ANALYTICS_ENABLE_TRACKING_COOKIE}
+        >
+          <AnalyticsScopeProvider name={document.name}>
+            <Routes>
+              <Route
+                path={url}
+                element={
+                  <PageLayout
+                    _site={_site}
+                    meta={__meta}
+                    path={path}
+                    document={document}
+                    alternateLanguageFields={alternateLanguageFields}
+                    template="location"
+                    locale={meta.locale}
+                    devLink={slug}
+                  >
+                    <Breadcrumbs
+                      baseUrl={`/${document.meta.locale}`}
+                      breadcrumbs={breadcrumbs}
+                    />
+                    <Information document={document} _site={_site} />
 
-            <NearByLocation
-              apiKey={YEXT_PUBLIC_ANSWER_SEARCH_API_KEY}
-              coordinate={document.yextDisplayCoordinate}
-              id={document.id}
-              meta={__meta}
-            />
-          </PageLayout>} />
-          </Routes>
-        </AnalyticsScopeProvider>
-      </AnalyticsProvider>
-    </div>
-     </Router>
+                    <NearByLocation
+                      apiKey={YEXT_PUBLIC_ANSWER_SEARCH_API_KEY}
+                      coordinate={document.yextDisplayCoordinate}
+                      id={document.id}
+                      meta={__meta}
+                    />
+                  </PageLayout>
+                }
+              />
+            </Routes>
+          </AnalyticsScopeProvider>
+        </AnalyticsProvider>
+      </div>
+    </Router>
   );
-  
 };
 export default withTranslation()(Location);

@@ -152,7 +152,7 @@ const Locator: Template<LocatorTemplateProps> = ({
       ? `${document.slug}`
       : `${
           document.meta.locale == "en"
-            ? "index.html"
+            ? "/"
             : `${document.meta.locale}`
         }`;
 

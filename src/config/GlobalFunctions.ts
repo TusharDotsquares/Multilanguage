@@ -150,30 +150,19 @@ export const updatelocale = (
   // window.location.reload();
 };
 
-export const getLink = ({
-  link,
-  mode,
-  template,
-  locale,
-  devLink,
-}: LinkParams) => {
-  let url = link;
-
-  if (mode === "development" && template) {
-    url = `/${template}`;
-    devLink && (url += `/${devLink}`);
-    locale && (url += `?locale=${locale}`);
+export const getLink = <Document>(document: Document, meta: TemplateMeta, isRecursive = true, skip = 0, useHtml = false, useBaseUrl = false) => {
+  const isDevelopment = meta.mode === "development" || false;
+  let url = `${isDevelopment ? "" : "/"}${document.slug}`;
+  if (!isDevelopment && isRecursive) {
+    url = getRecursiveData(document, meta, skip, useHtml, useBaseUrl);
   }
-  return url;
+  return `${url}`;
 };
 
-export const getRecursiveData = <DataType>(
-  element: DataType,
-  meta: TemplateMeta,
-  skip = 0
-) => {
-  let slug = "";
-  if (meta.mode === "development") {
+export const getRecursiveData = <DataType>(element: DataType, meta: TemplateMeta, skip = 0, useHtml = false, useBaseUrl = false) => {
+  let slug = useBaseUrl ? YEXT_PUBLIC_WEBSITE_URL : "";
+  const isDevelopment = meta.mode === "development" || false;
+  if (isDevelopment) {
     slug = element.slug;
   } else {
     if (element.dm_directoryParents) {
@@ -183,10 +172,11 @@ export const getRecursiveData = <DataType>(
         }
       });
     }
-    slug += `/${element.slug}`;
+    slug += `/${element.slug}${useHtml && !isDevelopment ? ".html" : ""}`;
   }
   return slug;
 };
+
 
 export const getBreadcrumb = <DataType, Document>(
   data: DataType[],
@@ -194,36 +184,43 @@ export const getBreadcrumb = <DataType, Document>(
   meta: TemplateMeta,
   isRecursive = true,
   skip = 0,
+  useHtml = false,
   basePrefix = "",
   baseName = ""
 ) => {
   const breadcrumbs: BreadcrumbItem[] = [];
-
+  const isDevelopment = meta.mode === "development" || false;
   if (isRecursive) {
     data.forEach((element: DataType, index: number) => {
       if (index >= skip && index !== 0) {
-        const slug = getRecursiveData<DataType>(element, meta, skip);
+        const slug = getRecursiveData<DataType>(element, meta, skip, useHtml, true);
         breadcrumbs.push({
           slug: slug,
           name: element.name,
         });
-      } else if (index === 0) {
+      } else if (index === 0 && basePrefix) {
         breadcrumbs.push({
           slug: basePrefix,
+          name: baseName ? baseName : element.name,
+        });
+      } else if (index === 0) {
+        const slug = getRecursiveData<DataType>(element, meta, skip, useHtml, true);
+        breadcrumbs.push({
+          slug: slug,
           name: baseName ? baseName : element.name,
         });
       }
     });
 
     breadcrumbs.push({
-      slug: getRecursiveData(document, meta),
+      slug: getRecursiveData(document, meta, skip, useHtml, true),
       name: document.name,
     });
   } else {
-    let slug = "";
+    let slug = YEXT_PUBLIC_WEBSITE_URL;
     data.forEach((element: DataType, index: number) => {
       if (element.slug && index >= skip) {
-        slug += `/${element.slug}`;
+        slug += `/${element.slug}${useHtml && !isDevelopment ? ".html" : ""}`;
         breadcrumbs.push({
           slug: slug,
           name: element.name,
@@ -237,7 +234,7 @@ export const getBreadcrumb = <DataType, Document>(
     });
 
     breadcrumbs.push({
-      slug: slug + `/${document.slug}`,
+      slug: slug + `/${document.slug}${useHtml && !isDevelopment ? ".html" : ""}`,
       name: document.name,
     });
   }

@@ -121,12 +121,12 @@ const State: Template<StateTemplateProps> = ({
    dm_directoryParents != "undefined"
   ) {
     const parent: string[] = [];
-   dm_directoryParents?.map(
+   dm_directoryParents?.slice(1).map(
       (i: { meta: EntityMeta; slug: string; name: string }) => {
         parent.push(i.slug);
       }
     );
-    url= `${parent.join("/")}/${document.slug.toString()}.html`;
+    url= `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
   } else {
     url= `${document.slug.toString()}.html`;
   }

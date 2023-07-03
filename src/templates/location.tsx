@@ -132,7 +132,7 @@ export const transformProps: TransformProps<TransformData> = async (data) => {
     data.__meta,
     false,
     1,
-    true
+    false
   );
   return { ...data, breadcrumbs };
 };

@@ -122,7 +122,7 @@ const City: Template<CityTemplateProps> = ({
   __meta,
   path
 }: CityTemplateProps) => {
-  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents } = document;
+  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents,alternateLanguageFields } = document;
   let url ="";
   if(__meta.mode === "development"){
     url =`${document?.slug.toString()}`;
@@ -153,6 +153,7 @@ const City: Template<CityTemplateProps> = ({
         meta={__meta}
         path={path}
         template="country"
+        alternateLanguageFields={alternateLanguageFields}
         locale={meta.locale}
         devLink={slug}
       >

@@ -27,10 +27,9 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const { meta, locale,alternateLanguageFields,document } = props;
+  const { meta, locale,alternateLanguageFields } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
-  const navigate:Navigate = useNavigate();
   React.useEffect(() => {
     const parameter = locale;
     const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];
@@ -44,7 +43,7 @@ const Header = (props: HeaderProps) => {
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
     console.log('props', props)
-    updatelocale(language, props,document,navigate);
+    updatelocale(language,meta);
 
   };
 

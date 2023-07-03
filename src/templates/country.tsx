@@ -55,23 +55,10 @@ export const config: TemplateConfig = {
 
 export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
   if (__meta.mode === "development") {
-    return document.slug;
+    return `${document.slug.toString()}.html`;
   } else {
-    if (
-      document.dm_directoryParents &&
-      document.dm_directoryParents != "undefined"
-    ) {
-      const parent: string[] = [];
-      document.dm_directoryParents?.slice(1).map(
-        (i: { meta: EntityMeta; slug: string; name: string }) => {
-          parent.push(slugify(i.slug));
-        }
-      );
-      return `${document.meta.locale}/${parent.join("/")}/${document.slug.toString()}.html`;
-    } else {
-      return `${document.slug.toString()}.html`;
+      return `${document.meta.locale}/${document.slug.toString()}.html`;
     }
-  }
 };
 
 export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
@@ -120,26 +107,14 @@ const country: Template<CountryTemplateProps> = ({
   __meta,
   path
 }: CountryTemplateProps) => {
-  const { _site, meta, slug, dm_directoryChildren,dm_directoryParents } = document;
+  const { _site, meta, slug, dm_directoryChildren,dm_directoryParents,alternateLanguageFields } = document;
   let url ="";
   if (__meta.mode === "development") {
     url= document.slug;
   } else {
-    if (
-     dm_directoryParents &&
-     dm_directoryParents != "undefined"
-    ) {
-      const parent: string[] = [];
-      dm_directoryParents?.map(
-        (i: { meta: EntityMeta; slug: string; name: string }) => {
-          parent.push(i.slug);
-        }
-      );
-      url= `${parent.join("/")}/${document.slug.toString()}.html`;
-    } else {
-      url= `${document.slug.toString()}.html`;
+      url= `${document.meta.locale}/${document.slug.toString()}.html`;
     }
-  }
+  
 
   return (
     
@@ -153,6 +128,7 @@ const country: Template<CountryTemplateProps> = ({
         _site={_site}
         meta={__meta}
         path={path}
+        alternateLanguageFields={alternateLanguageFields}
         template="country"
         locale={meta.locale}
         devLink={slug}

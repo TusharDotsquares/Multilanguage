@@ -35,6 +35,7 @@ export interface CountryDocument {
   _site: SiteData;
   dm_directoryChildren:DirectoryChild[]
   dm_directoryParents:DirectoryParent[]
+  alternateLanguageFields?:Alternatelng
 }
 
 export interface StateDocument {
@@ -45,6 +46,7 @@ export interface StateDocument {
   _site: SiteData;
   dm_directoryChildren: DirectoryChild[];
   dm_directoryParents:DirectoryParent[]
+  alternateLanguageFields?:Alternatelng
 }
 
 export interface CityDocument {
@@ -54,6 +56,7 @@ export interface CityDocument {
   meta: EntityMeta;
   _site: SiteData;
   dm_directoryChildren: LocationDocument[];
+  alternateLanguageFields?:Alternatelng
 }
 
 export interface LocationDocument {

@@ -9,6 +9,7 @@ import {
 } from "../types/Locator";
 import {
   CityDocument,
+  EntityMeta,
   LocationDocument,
   SiteData,
   StateDocument,
@@ -62,94 +63,37 @@ export function slugify(slugString: string) {
 }
 export const updatelocale = (
   locale: string,
-  props: updatelocaleProps,
-  document?: LocationDocument | CityDocument | StateDocument | LocatorDocument,
-  navigate: Navigate,
+  meta:TemplateMeta
 ) => {
-  let redirectUrl = "";
-  if (props.template === "locatorSearch") {
-    let path: string | null = props.path.split("/")[1];
-    if (props.meta.mode === "development") {
-      path = "/" + locale + "/" + path + "?locale=" + locale;
-    } else if (locale === "en") {
-      path = "/";
-    } else {
-      path = "/" + locale;
-    }
-    redirectUrl = path;
-  } else if (props.template === "continents") {
-    const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    const url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: string | null = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      redirectUrl = newUrl;
-    }
-  } else if (props.template === "location") {
-    let path = "";
-    console.log("props", props);
-    const array: Alternatelng = props.alternateLanguageFields;
-    array[locale] = {
-      id: document?.id,
-      name: document?.name,
-      slug: document?.slug,
-    };
-    const updatedLanguagesData = array;
-    console.log("updatedLanguagesData", updatedLanguagesData);
-    for (const key in updatedLanguagesData) {
-      if (key === locale) {
-        const t = updatedLanguagesData;
-        if (t[key].slug) {
-          path = "/" + locale + "/" + t[key].slug + ".html";
-        } else {
-          let slug = t[key].id + " " + t[key].name;
-          slug = slugify(slug);
-
-          path = "/" + locale + "/" + slug;
-          path = path + ".html";
-        }
-
-        redirectUrl = path;
-      }
-    }
-    for (const key in updatedLanguagesData) {
-      if (key !== locale) {
-        const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-        const url = new URL(window.location.href);
-        // url.searchParams.set("country", country);
-
-        for (const locales of localesAr) {
-          if (url.href.includes("/" + locales + "/")) {
-            path = url.href.replace("/" + locales + "/", "/" + locale + "/");
-          }
-        }
-        redirectUrl = path;
-      }
-    }
-  } else if (props.template === "city") {
-    const localesAr = ["en", "ja", "zh_Hans_CN", "de", "fr", "es", "it"];
-    const url = new URL(window.location.href);
-    // url.searchParams.set("country", country);
-    let newUrl: string | null = null;
-    for (const locales of localesAr) {
-      if (url.href.includes("/" + locales + "/")) {
-        newUrl = url.href.replace("/" + locales + "/", "/" + locale + "/");
-      }
-    }
-    if (newUrl) {
-      redirectUrl = newUrl;
-    }
-  }
+  const redirectUrl = changeFirstPathname(locale,meta)
   return  window.location.href = redirectUrl
-  // navigate(redirectUrl);
-  // window.location.reload();
+
 };
 
+function changeFirstPathname(locale:string,meta:TemplateMeta) {
+  // Create a new URL object with the current URL
+  const currentUrl = new URL(window.location.href);
+
+  // Get the current pathname segments
+  const segments = currentUrl.pathname.split('/');
+
+  // Replace the first segment with the new value
+  segments[1] = locale;
+
+  // Join the segments back into a string
+  const newPathname = segments.join('/');
+
+  // Update the URL with the modified pathname
+  currentUrl.pathname = newPathname;
+
+  // Navigate to the new URL
+  if(meta.mode === "development"){
+    return  segments.join(`?locale=${locale}`);
+  }else{
+    return  currentUrl.toString();
+  }
+   
+}
 export const getLink = <Document>(document: Document, meta: TemplateMeta, isRecursive = true, skip = 0, useHtml = false, useBaseUrl = false) => {
   const isDevelopment = meta.mode === "development" || false;
   let url = `${isDevelopment ? "" : "/"}${document.slug}`;

@@ -8,16 +8,17 @@ import {
 import { Hours as ComponentHours, DayHour } from "@yext/search-core";
 import moment from "moment";
 import { useTranslation } from "react-i18next";
+import { DayOfWeekNames } from "../../../types";
 
-const defaultDayOfWeekNames = [
-  "sunday",
-  "monday",
-  "tuesday",
-  "wednesday",
-  "thursday",
-  "friday",
-  "saturday",
-];
+// const defaultDayOfWeekNames = [
+//   "sunday",
+//   "monday",
+//   "tuesday",
+//   "wednesday",
+//   "thursday",
+//   "friday",
+//   "saturday",
+// ];
 
 interface HoursCollapseDay {
   isToday: boolean;
@@ -38,7 +39,7 @@ function getSortIdx(props: HoursProps, todayDate: Date) {
     startIdx = todayDate.getDay();
     return arrayShift(defaultDayOfWeekSortIdx, startIdx);
   } else if (props.startOfWeek) {
-    startIdx = defaultDayOfWeekNames.indexOf(props.startOfWeek);
+    startIdx = props.defaultDayOfWeekNames.indexOf(props.startOfWeek);
     return arrayShift(defaultDayOfWeekSortIdx, startIdx);
   } else {
     return defaultDayOfWeekSortIdx;
@@ -119,6 +120,7 @@ interface HoursProps {
   intervalStringsBuilderFn?: () => string[];
   startOfWeek?: string;
   message?: string;
+  defaultDayOfWeekNames:DayOfWeekNames
 }
 
 const Hours = (props: HoursProps) => {
@@ -138,7 +140,7 @@ const Hours = (props: HoursProps) => {
     );
   }
   const now = new Date();
-  const dayOfWeekNames = defaultDayOfWeekNames;
+  const dayOfWeekNames = props.defaultDayOfWeekNames;
   const dayOfWeekSortIdx = getSortIdx(props, new Date());
   const allIntervals = h.getIntervalsForNDays(7, now);
   let hoursDays = [];
@@ -189,7 +191,7 @@ const Hours = (props: HoursProps) => {
                   dayData.isToday ? "is-today" : ""
                 }`}
               >
-                <td className="hours-table-day">{t(dayData.dayOfWeek)}</td>
+                <td className="hours-table-day">{dayData.dayOfWeek}</td>
                 <td className="hours-table-intervals">
                   {intervalStrings.map((intervalString, idx) => (
                     <span className="hours-table-interval" key={idx}>

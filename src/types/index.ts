@@ -12,8 +12,24 @@ export interface SiteData {
   id: string;
   slug: string;
   name: string;
+  c_sunday:string,
+  c_monday:string,
+  c_tuesday:string,
+  c_wednesday:string,
+  c_thursday:string,
+  c_friday:string,
+  c_saturday:string,
 
 }
+export type DayOfWeekNames = [
+  string, // Sunday
+  string, // Monday
+  string, // Tuesday
+  string, // Wednesday
+  string, // Thursday
+  string, // Friday
+  string  // Saturday
+];
 
 export interface TemplateMeta {
   mode: "development" | "production";

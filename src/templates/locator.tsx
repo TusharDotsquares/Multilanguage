@@ -40,14 +40,7 @@ export const config: TemplateConfig = {
     filter: {
       entityIds: ["globaldata"],
     },
-    fields: [
-      "id",
-      "uid",
-      "meta",
-      "name",
-      "slug",
-      "c_countryWithPrimaryAndSecondaryLanguage",
-    ],
+    "fields": ["id", "uid", "meta", "name", "slug","c_countryWithPrimaryAndSecondaryLanguage","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
     localization: {
       locales: ["en", "fr", "it", "ja", "de"],
       primary: false,

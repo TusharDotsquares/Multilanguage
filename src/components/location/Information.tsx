@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Address, Link } from "@yext/pages/components";
-import { LocationDocument, SiteData } from "../../types";
+import { DayOfWeekNames, LocationDocument, SiteData } from "../../types";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Hours } from "../common/Hours/Hours";
 import HolidayHour from "./HolidayHour";
@@ -10,9 +10,10 @@ import { useTranslation } from "react-i18next";
 type InformationProps = {
   document: LocationDocument;
   _site: SiteData;
+  defaultDayOfWeekNames:DayOfWeekNames
 };
 
-const Information = ({ document, _site }: InformationProps) => {
+const Information = ({ document, _site ,defaultDayOfWeekNames}: InformationProps) => {
   const getPosition = (location: LocationDocument) => {
     const lat = location.yextDisplayCoordinate.latitude;
     const lng = location.yextDisplayCoordinate.longitude;
@@ -67,6 +68,7 @@ const Information = ({ document, _site }: InformationProps) => {
                   <Hours
                     hours={document.hours}
                     showHeader={true}
+                    defaultDayOfWeekNames={defaultDayOfWeekNames}
                     startOfWeek="today"
                     message={document.additionalHoursText}
                   />

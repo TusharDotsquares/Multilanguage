@@ -10,7 +10,7 @@ import {
   TransformProps,
 } from "@yext/pages";
 // import favicon from "../assets/images/favicon.ico";
-import { EntityMeta, LocationDocument, TemplateMeta } from "../types";
+import { DayOfWeekNames, EntityMeta, LocationDocument, TemplateMeta } from "../types";
 import PageLayout from "../components/layout/PageLayout";
 import { withTranslation, useTranslation } from "react-i18next";
 import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
@@ -169,7 +169,16 @@ const Location: Template<LocationTemplateProps> = ({
     url = `${document.meta.locale}/${document?.slug.toString()}.html`;
   }
 
-  console.log("breadcrumbs", breadcrumbs);
+  const defaultDayOfWeekNames:DayOfWeekNames = [
+    _site.c_sunday,
+    _site.c_monday,
+    _site.c_tuesday,
+    _site.c_wednesday,
+    _site.c_thursday,
+    _site.c_friday,
+    _site.c_saturday,
+  ];
+  
   return (
     <Router location={url}>
       <div id="main">
@@ -197,7 +206,7 @@ const Location: Template<LocationTemplateProps> = ({
                       baseUrl={`/${document.meta.locale}`}
                       breadcrumbs={breadcrumbs}
                     />
-                    <Information document={document} _site={_site} />
+                    <Information document={document} _site={_site} defaultDayOfWeekNames={defaultDayOfWeekNames} />
 
                     <NearByLocation
                       apiKey={YEXT_PUBLIC_ANSWER_SEARCH_API_KEY}

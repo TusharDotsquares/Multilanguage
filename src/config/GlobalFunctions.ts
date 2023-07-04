@@ -103,34 +103,11 @@ export const updatelocale = (
     } 
   }
 
- return  window.location.href = redirectUrl
+ return   window.location.href = redirectUrl
 
 };
 
-function changeFirstPathname(locale:string,meta:TemplateMeta) {
-  // Create a new URL object with the current URL
-  const currentUrl = new URL(window.location.href);
 
-  // Get the current pathname segments
-  const segments = currentUrl.pathname.split('/');
-
-  // Replace the first segment with the new value
-  segments[1] = locale;
-
-  // Join the segments back into a string
-  const newPathname = segments.join('/');
-
-  // Update the URL with the modified pathname
-  currentUrl.pathname = newPathname;
-
-  // Navigate to the new URL
-  if(meta.mode === "development"){
-    return  segments.join(`?locale=${locale}`);
-  }else{
-    return  currentUrl.toString();
-  }
-   
-}
 export const getLink = <Document>(document: Document, meta: TemplateMeta, isRecursive = true, skip = 0, useHtml = false, useBaseUrl = false) => {
   const isDevelopment = meta.mode === "development" || false;
   let url = `${isDevelopment ? "" : "/"}${document.slug}`;

@@ -60,7 +60,7 @@ export const config: TemplateConfig = {
       primary: false,
     },
   },
-  alternateLanguageFields: ["slug", "name", "id"],
+  alternateLanguageFields: ["slug", "name", "id","address"],
 };
 
 export const getPath: GetPath<TemplateProps> = ({ document }) => {

@@ -63,10 +63,47 @@ export function slugify(slugString: string) {
 }
 export const updatelocale = (
   locale: string,
-  meta:TemplateMeta
+  template:string,
+  meta:TemplateMeta,
+  document:LocationDocument|CityDocument|StateDocument
 ) => {
-  const redirectUrl = changeFirstPathname(locale,meta)
-  return  window.location.href = redirectUrl
+  let redirectUrl ="";
+  const data = document.alternateLanguageFields && document.alternateLanguageFields[locale];
+  const {address,slug}= data || {};
+  if(template === "location"){
+    if (meta.mode === "development") {
+      redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
+    } else {
+      redirectUrl = `${locale}/${slugify(address.countryCode)}/${slugify(address.city)}/${slug?.toString()}.html`;
+    } 
+  }
+  else if(template === "country"){
+    if (meta.mode === "development") {
+      redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
+    } else {
+      redirectUrl = `${locale}/${slug?.toString()}.html`;
+    } 
+  }
+ else if(template === "city"){
+    if (meta.mode === "development") {
+      redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
+    } else {
+      redirectUrl =`${locale}/${slugify(address.countryCode)}/${slug?.toString()}.html`;
+    } 
+  }
+  else  if(template === "locatorSearch"){
+    if (meta.mode === "development") {
+      redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
+    } else {
+      redirectUrl =`${
+        document.meta.locale == "en"
+          ? "/"
+          : `${locale}`
+      }`;
+    } 
+  }
+
+ return  window.location.href = redirectUrl
 
 };
 

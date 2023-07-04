@@ -16,6 +16,7 @@ export type Alternatelng= {
     id: string| undefined;
     name: string| undefined;
     slug?: string| undefined;
+    address: AddressType;
   };
 }
 

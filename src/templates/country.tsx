@@ -138,11 +138,11 @@ const country: Template<CountryTemplateProps> = ({
         <div className="directory-children">
           {dm_directoryChildren &&
             dm_directoryChildren.map((region: DirectoryChild) => {
-              const url = region.slug;
+               const url = region.slug;
 
               return (
                 <div className="directory-children-card" key={region.slug}>
-                  <Link className="directory-children-name" href={`/${url}`}>
+                  <Link className="directory-children-name" href={`${meta.locale}/${slug}/${url}.html`}>
                     {region.name}
                   </Link>
                 </div>

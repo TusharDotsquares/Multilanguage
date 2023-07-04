@@ -59,6 +59,7 @@ export interface StateDocument {
   id:string;
   slug: string;
   meta: EntityMeta;
+  address: AddressType;
   _site: SiteData;
   dm_directoryChildren: DirectoryChild[];
   dm_directoryParents:DirectoryParent[]
@@ -71,6 +72,7 @@ export interface CityDocument {
   slug: string;
   meta: EntityMeta;
   _site: SiteData;
+  address: AddressType;
   dm_directoryChildren: LocationDocument[];
   dm_directoryParents:DirectoryParent[];
   alternateLanguageFields?:Alternatelng

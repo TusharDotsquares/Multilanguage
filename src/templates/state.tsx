@@ -112,7 +112,7 @@ const State: Template<StateTemplateProps> = ({
   __meta,
   path
 }: StateTemplateProps) => {
-  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents } = document;
+  const { meta, _site, slug, dm_directoryChildren,dm_directoryParents,alternateLanguageFields } = document;
    let url="";
    if (__meta.mode === "development") {
     url= document.slug;
@@ -141,6 +141,7 @@ const State: Template<StateTemplateProps> = ({
         _site={_site}
         meta={__meta}
         path={path}
+        alternateLanguageFields={alternateLanguageFields}
         template="country"
         locale={meta.locale}
         devLink={slug}

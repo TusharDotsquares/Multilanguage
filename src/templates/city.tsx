@@ -163,20 +163,20 @@ const City: Template<CityTemplateProps> = ({
           <div className="container">
             {dm_directoryChildren &&
               dm_directoryChildren.map((location: LocationDocument) => {
-                const url = location.slug;
+                const url = `${meta.locale}/${location.address.countryCode}/${location.address.city}/${location.slug}`;
 
                 return (
                   <div className="city-location" key={location.id}>
                     <div className="location-card">
                       <div className="icon-row">
                         <div className="icon addressIcon"></div>
-                        <Link className="location-name" href={`/${url}`}>
+                        <Link className="location-name" href={`${url}`}>
                           {location.name}
                         </Link>
                         <Address address={location.address} />
                       </div>
                       <div className="button-bx-detail">
-                        <Link className="button link" href={`/${url}`}>
+                        <Link className="button link" href={`${url}`}>
                           View Details
                         </Link>
                       </div>

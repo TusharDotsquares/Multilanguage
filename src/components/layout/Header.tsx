@@ -18,16 +18,16 @@ const navigation = [
 interface HeaderProps {
   _site?: SiteData;
   meta: TemplateMeta;
-  template?: string;
+  template: string;
   path: string;
-  document?:LocationDocument|CityDocument|StateDocument|LocatorDocument 
+  document:LocationDocument|CityDocument|StateDocument  
   alternateLanguageFields?: Alternatelng;
   devLink?: string;
   locale?: string;
 }
 
 const Header = (props: HeaderProps) => {
-  const { meta, locale,alternateLanguageFields } = props;
+  const { meta, locale,template,alternateLanguageFields,document } = props;
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
   React.useEffect(() => {
@@ -43,7 +43,7 @@ const Header = (props: HeaderProps) => {
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
     console.log('props', props)
-    updatelocale(language,meta);
+    updatelocale(language,template,meta,document);
 
   };
 

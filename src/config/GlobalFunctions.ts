@@ -98,12 +98,12 @@ export const updatelocale = (
     } else {
       redirectUrl =`${
          locale == "en"
-          ? "/"
+          ? ""
           : `${locale}`
       }`;
     } 
   }
-  console.log('redirectUrl', redirectUrl)
+
   window.location.href = `/${redirectUrl}`
   // window.location.reload();
 

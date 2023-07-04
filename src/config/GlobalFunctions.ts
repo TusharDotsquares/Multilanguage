@@ -102,8 +102,9 @@ export const updatelocale = (
       }`;
     } 
   }
-
-  window.location.replace(redirectUrl);
+  
+  window.history.pushState(null, "", redirectUrl);
+  window.location.reload();
 
 };
 

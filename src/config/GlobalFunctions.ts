@@ -103,7 +103,7 @@ export const updatelocale = (
     } 
   }
 
- return   window.location.href = redirectUrl
+  window.location.replace(redirectUrl);
 
 };
 

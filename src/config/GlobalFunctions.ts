@@ -103,8 +103,8 @@ export const updatelocale = (
     } 
   }
   
-  window.history.pushState(null, "", redirectUrl);
-  window.location.reload();
+  window.location.assign(redirectUrl);
+  // window.location.reload();
 
 };
 

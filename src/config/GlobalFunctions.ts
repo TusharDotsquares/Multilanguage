@@ -71,7 +71,7 @@ export const updatelocale = (
   const data = document.alternateLanguageFields && document.alternateLanguageFields[locale];
   const {address,slug}= data || {};
   if(template === "location"){
-    if (meta.mode === "development") {
+    if (meta.mode != "development") {
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {
       redirectUrl = `${locale}/${slugify(address.countryCode)}/${slugify(address.city)}/${slug?.toString()}.html`;
@@ -102,8 +102,8 @@ export const updatelocale = (
       }`;
     } 
   }
-  
-  window.location.assign(redirectUrl);
+  console.log('redirectUrl', redirectUrl)
+  window.location.href = `/${redirectUrl}`
   // window.location.reload();
 
 };

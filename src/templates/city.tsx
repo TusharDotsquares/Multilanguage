@@ -152,6 +152,7 @@ const City: Template<CityTemplateProps> = ({
         _site={_site}
         meta={__meta}
         path={path}
+        document={document}
         template="country"
         alternateLanguageFields={alternateLanguageFields}
         locale={meta.locale}

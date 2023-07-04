@@ -39,7 +39,7 @@ const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
     url= `${location.rawData.slug.toString()}`;
   }
 
-console.log('location.rawData', location.rawData)
+
   const {t} = useTranslation();
   const scrollIntoView = (element: HTMLDivElement, offset: number) => {
     const elementPosition = element.getBoundingClientRect().top;

@@ -9,6 +9,7 @@ import {
 } from "../types/Locator";
 import {
   CityDocument,
+  CountryDocument,
   EntityMeta,
   LocationDocument,
   SiteData,
@@ -65,13 +66,13 @@ export const updatelocale = (
   locale: string,
   template:string,
   meta:TemplateMeta,
-  document:LocationDocument|CityDocument|StateDocument
+  document:LocationDocument|CityDocument|StateDocument|LocatorDocument|CountryDocument
 ) => {
   let redirectUrl ="";
   const data = document.alternateLanguageFields && document.alternateLanguageFields[locale];
   const {address,slug}= data || {};
   if(template === "location"){
-    if (meta.mode != "development") {
+    if (meta.mode === "development") {
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {
       redirectUrl = `${locale}/${slugify(address.countryCode)}/${slugify(address.city)}/${slug?.toString()}.html`;
@@ -96,7 +97,7 @@ export const updatelocale = (
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {
       redirectUrl =`${
-        document.meta.locale == "en"
+         locale == "en"
           ? "/"
           : `${locale}`
       }`;

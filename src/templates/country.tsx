@@ -130,6 +130,7 @@ const country: Template<CountryTemplateProps> = ({
         path={path}
         alternateLanguageFields={alternateLanguageFields}
         template="country"
+        document={document}
         locale={meta.locale}
         devLink={slug}
       >

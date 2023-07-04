@@ -143,6 +143,7 @@ const State: Template<StateTemplateProps> = ({
         path={path}
         alternateLanguageFields={alternateLanguageFields}
         template="country"
+        document={document}
         locale={meta.locale}
         devLink={slug}
       >

@@ -10,6 +10,7 @@ export interface LocatorDocument {
   id: string;
   slug: string;
   alternateLanguageFields?:Alternatelng
+  address?: AddressType;
 }
 export type Alternatelng= {
   [language: string]: {

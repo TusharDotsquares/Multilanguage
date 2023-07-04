@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ChangeEvent } from 'react';
 import { Link } from "@yext/pages/components";
-import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
+import { CityDocument, CountryDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
 import logo from "../../assets/images/logo.jpg";
 import { Alternatelng, LocatorDocument } from "../../types/Locator";
 import { slugify, updatelocale } from "../../config/GlobalFunctions";
@@ -20,7 +20,7 @@ interface HeaderProps {
   meta: TemplateMeta;
   template: string;
   path: string;
-  document:LocationDocument|CityDocument|StateDocument  
+  document:LocationDocument|CityDocument|StateDocument|LocatorDocument|CountryDocument  
   alternateLanguageFields?: Alternatelng;
   devLink?: string;
   locale?: string;
@@ -42,7 +42,7 @@ const Header = (props: HeaderProps) => {
   const updateUrl = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
-    console.log('props', props)
+    console.log('document', document)
     updatelocale(language,template,meta,document);
 
   };

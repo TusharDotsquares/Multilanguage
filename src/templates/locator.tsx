@@ -178,6 +178,7 @@ const Locator: Template<LocatorTemplateProps> = ({
                 meta={__meta}
                 path={path}
                 template="locatorSearch"
+                document={document}
                 locale={meta.locale}
               >
                 <main className="main-content">

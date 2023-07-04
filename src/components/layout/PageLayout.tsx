@@ -1,7 +1,7 @@
 import * as React from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { CityDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
+import { CityDocument, CountryDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
 import { Alternatelng, LocatorDocument } from "../../types/Locator";
 
 export interface PageLayoutProps {
@@ -9,9 +9,9 @@ export interface PageLayoutProps {
   _site?: SiteData;
   meta: TemplateMeta;
   alternateLanguageFields?:Alternatelng;
-  template?: string;
+  template: string;
   path:string;
-  document?:LocationDocument|CityDocument|StateDocument|LocatorDocument
+  document:LocationDocument|CityDocument|StateDocument|LocatorDocument|CountryDocument
   devLink?: string;
   locale?: string;
 }

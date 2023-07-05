@@ -20,6 +20,7 @@ import "../index.css";
 import { Address, Link } from "@yext/pages/components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
+import { slugify } from "../config/GlobalFunctions";
 
 export const config: TemplateConfig = {
   stream: {
@@ -164,7 +165,7 @@ const City: Template<CityTemplateProps> = ({
           <div className="container">
             {dm_directoryChildren &&
               dm_directoryChildren.map((location: LocationDocument) => {
-                const url = `${meta.locale}/${location.address.countryCode}/${location.address.city}/${location.slug}`;
+                const url = `${meta.locale}/${slugify(location.address.countryCode)}/${slugify(location.address.city)}/${location.slug}.html`;
 
                 return (
                   <div className="city-location" key={location.id}>

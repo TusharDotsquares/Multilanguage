@@ -89,7 +89,7 @@ export const updatelocale = (
     } 
   }
  else if(template === "city"){
-    if (meta.mode != "development") {
+    if (meta.mode === "development") {
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {
       if (

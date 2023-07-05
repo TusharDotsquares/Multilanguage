@@ -62,6 +62,9 @@ export function slugify(slugString: string) {
   slugString = slugString.replaceAll("'", "");
   return slugString.toLowerCase();
 }
+
+
+
 export const updatelocale = (
   locale: string,
   template:string,

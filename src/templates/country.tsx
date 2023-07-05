@@ -7,6 +7,7 @@ import {
   TemplateRenderProps,
   GetHeadConfig,
   HeadConfig,
+  TransformProps,
 } from "@yext/pages";
 import favicon from "../assets/images/favicon.ico";
 import { EntityMeta, TemplateMeta } from "../types";
@@ -17,7 +18,8 @@ import { Link } from "@yext/pages/components";
 import { DirectoryChild } from "../types/DirectoryChild";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { slugify } from "../config/GlobalFunctions";
+import { getBreadcrumb, slugify } from "../config/GlobalFunctions";
+import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
 /**
  * Required when Knowledge Graph data is used for a template.
  */
@@ -60,6 +62,9 @@ export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
       return `${document.meta.locale}/${document.slug.toString()}.html`;
     }
 };
+type TransformData = TemplateRenderProps & {
+  breadcrumbs: BreadcrumbItem[];
+};
 
 export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
   document,
@@ -101,10 +106,30 @@ interface CountryTemplateProps extends TemplateRenderProps {
   __meta: TemplateMeta;
   document: CountryDocument;
 }
+export const transformProps: TransformProps<TransformData> = async (data) => {
+  const document = data.document as CountryDocument;
+  const directoryParents = document.dm_directoryParents || [];
+  const breadcrumbs = getBreadcrumb(
+    directoryParents,
+    document,
+    data.__meta,
+    false,
+    1,
+    false
+  );
+  return { ...data, breadcrumbs };
+};
+
+interface CountryTemplateProps extends TransformData {
+  __meta: TemplateMeta;
+  document: CountryDocument;
+}
+
 const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const country: Template<CountryTemplateProps> = ({
   document,
   __meta,
+  breadcrumbs,
   path
 }: CountryTemplateProps) => {
   const { _site, meta, slug, dm_directoryChildren,dm_directoryParents,alternateLanguageFields } = document;
@@ -134,7 +159,12 @@ const country: Template<CountryTemplateProps> = ({
         locale={meta.locale}
         devLink={slug}
       >
+             <Breadcrumbs
+                      baseUrl={`/${document.meta.locale}`}
+                      breadcrumbs={breadcrumbs}
+                    />
         <h1>Country</h1>
+   
 
         <div className="directory-children">
           {dm_directoryChildren &&

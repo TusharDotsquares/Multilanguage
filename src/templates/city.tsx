@@ -7,6 +7,7 @@ import {
   TemplateRenderProps,
   GetHeadConfig,
   HeadConfig,
+  TransformProps,
 } from "@yext/pages";
 import favicon from "../assets/images/favicon.ico";
 import {
@@ -20,7 +21,8 @@ import "../index.css";
 import { Address, Link } from "@yext/pages/components";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
-import { slugify } from "../config/GlobalFunctions";
+import { getBreadcrumb, slugify } from "../config/GlobalFunctions";
+import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
 
 export const config: TemplateConfig = {
   stream: {
@@ -112,15 +114,33 @@ export const getHeadConfig: GetHeadConfig<TemplateRenderProps> = ({
     ],
   };
 };
+type TransformData = TemplateRenderProps & {
+  breadcrumbs: BreadcrumbItem[];
+};
 
-interface CityTemplateProps extends TemplateRenderProps {
+interface CityTemplateProps extends TransformData {
   __meta: TemplateMeta;
   document: CityDocument;
 }
+export const transformProps: TransformProps<TransformData> = async (data) => {
+  const document = data.document as CityDocument;
+  const directoryParents = document.dm_directoryParents || [];
+  const breadcrumbs = getBreadcrumb(
+    directoryParents,
+    document,
+    data.__meta,
+    false,
+    1,
+    false
+  );
+  return { ...data, breadcrumbs };
+};
+
 const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const City: Template<CityTemplateProps> = ({
   document,
   __meta,
+  breadcrumbs,
   path
 }: CityTemplateProps) => {
   const { meta, _site, slug, dm_directoryChildren,dm_directoryParents,alternateLanguageFields } = document;
@@ -159,6 +179,10 @@ const City: Template<CityTemplateProps> = ({
         locale={meta.locale}
         devLink={slug}
       >
+         <Breadcrumbs
+                      baseUrl={`/${document.meta.locale}`}
+                      breadcrumbs={breadcrumbs}
+                    />
         <h1>City</h1>
         <h3>Locations</h3>
         <div className="city-locations">

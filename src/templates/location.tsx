@@ -213,6 +213,7 @@ const Location: Template<LocationTemplateProps> = ({
                       coordinate={document.yextDisplayCoordinate}
                       id={document.id}
                       meta={__meta}
+                      locale={document.meta.locale}
                     />
                   </PageLayout>
                 }

@@ -9,6 +9,7 @@ import "swiper/css";
 import {
   getDirectionUrl,
   getRecursiveData,
+  slugify,
 } from "../../config/GlobalFunctions";
 import { Coordinate } from "../google-map/SearchProvider";
 import { fetch } from "@yext/pages/util";
@@ -46,9 +47,10 @@ type NearbyProps = {
   id: string;
   meta: TemplateMeta;
   apiKey: string;
+  locale:string;
 };
 
-const NearByLocation = ({ meta, coordinate, id, apiKey }: NearbyProps) => {
+const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
   const [locations, setLocations] = React.useState<NearByLocationResult[]>([]);
   React.useEffect(() => {
     if (!coordinate || !apiKey) {
@@ -74,7 +76,7 @@ const NearByLocation = ({ meta, coordinate, id, apiKey }: NearbyProps) => {
         <h3 className="nearby-locations-title">{t("Nearby Locations")}</h3>
         <Swiper spaceBetween={50} slidesPerView={3}>
           {locations.map((location) => {
-            const url = getRecursiveData(location, meta);
+           const  url= `/${locale}/${slugify(location.address.countryCode)}/${slugify(location.address.city)}/${location.slug.toString()}.html`;
             return (
               <SwiperSlide key={location.id}>
                 <div className="location-card">

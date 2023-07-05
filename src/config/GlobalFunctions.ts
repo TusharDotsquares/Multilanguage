@@ -89,13 +89,23 @@ export const updatelocale = (
     } 
   }
  else if(template === "city"){
-    if (meta.mode === "development") {
+    if (meta.mode != "development") {
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {
-      redirectUrl =`${locale}/${slugify(address.countryCode)}/${slug?.toString()}.html`;
+      if (
+        document.dm_directoryParents &&
+        document.dm_directoryParents != "undefined"
+      ) {
+        const parent: string[] = [];
+        document.dm_directoryParents?.slice(1).map(
+          (i: { meta: EntityMeta; slug: string; name: string }) => {
+            parent.push(i.slug);
+          }
+        );
+      redirectUrl =`${locale}/${parent.join("/")}/${document.slug?.toString()}.html`;
     } 
   }
-  else  if(template === "locatorSearch"){
+} else  if(template === "locatorSearch"){
     if (meta.mode === "development") {
       redirectUrl = `${document?.slug.toString()}?locale=${locale}`;
     } else {

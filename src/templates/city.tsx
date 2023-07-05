@@ -172,13 +172,13 @@ const City: Template<CityTemplateProps> = ({
                     <div className="location-card">
                       <div className="icon-row">
                         <div className="icon addressIcon"></div>
-                        <Link className="location-name" href={`${url}`}>
+                        <Link className="location-name" href={`/${url}`}>
                           {location.name}
                         </Link>
                         <Address address={location.address} />
                       </div>
                       <div className="button-bx-detail">
-                        <Link className="button link" href={`${url}`}>
+                        <Link className="button link" href={`/${url}`}>
                           View Details
                         </Link>
                       </div>

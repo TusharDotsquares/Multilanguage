@@ -143,7 +143,7 @@ const country: Template<CountryTemplateProps> = ({
 
               return (
                 <div className="directory-children-card" key={region.slug}>
-                  <Link className="directory-children-name" href={`${meta.locale}/${slug}/${url}.html`}>
+                  <Link className="directory-children-name" href={`/${meta.locale}/${slug}/${url}.html`}>
                     {region.name}
                   </Link>
                 </div>

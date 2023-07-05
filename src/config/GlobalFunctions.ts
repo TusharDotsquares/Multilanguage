@@ -102,7 +102,7 @@ export const updatelocale = (
             parent.push(i.slug);
           }
         );
-      redirectUrl =`${locale}/${parent.join("/")}/${document.slug?.toString()}.html`;
+      redirectUrl =`${locale}/${parent.join("/")}/${slug?.toString()}.html`;
     } 
   }
 } else  if(template === "locatorSearch"){

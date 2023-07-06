@@ -5,12 +5,13 @@ import YextAutoSuggestions from "./YextAutoSuggestions";
 
 interface AutoSuggestionProps {
   locale: string;
+  c_useMyLocation:string
 }
-const AutoSuggestions = ({ locale }: AutoSuggestionProps) => {
+const AutoSuggestions = ({ locale ,c_useMyLocation}: AutoSuggestionProps) => {
   const { autocompleteType } = React.useContext(SearchContext);
 
   return autocompleteType === "google" ? (
-    <GoogleAutoSuggestions />
+    <GoogleAutoSuggestions c_useMyLocation={c_useMyLocation} />
   ) : (
     <YextAutoSuggestions locale={locale} />
   );

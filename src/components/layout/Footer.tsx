@@ -8,6 +8,7 @@ import {
 } from "../../assets/svgs/SocialIcons";
 import { SiteData, TemplateMeta } from "../../types";
 import logo from "../../assets/images/logo.jpg";
+import { CTA, LinkType } from "@yext/pages/components";
 
 interface FooterProps {
   _site?: SiteData;
@@ -21,60 +22,57 @@ interface FooterProps {
 const currentTime = new Date();
 const year = currentTime.getFullYear();
 
-const navigation = {
-  company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Jobs", href: "#" },
-    { name: "Press", href: "#" },
-    { name: "Partners", href: "#" },
-  ],
-  legal: [
-    { name: "Claim", href: "#" },
-    { name: "Privacy", href: "#" },
-    { name: "Terms", href: "#" },
-  ],
-  social: [
-    {
-      name: "Facebook",
-      href: "#",
-      icon: (
-        props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-      ) => <Facebook {...props} />,
-    },
-    {
-      name: "Instagram",
-      href: "#",
-      icon: (
-        props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-      ) => <Instagram {...props} />,
-    },
-    {
-      name: "Twitter",
-      href: "#",
-      icon: (
-        props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-      ) => <Twitter {...props} />,
-    },
-    {
-      name: "GitHub",
-      href: "#",
-      icon: (
-        props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-      ) => <GitHub {...props} />,
-    },
-    {
-      name: "YouTube",
-      href: "#",
-      icon: (
-        props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
-      ) => <YouTube {...props} />,
-    },
-  ],
-};
+
 
 const Footer = (props: FooterProps) => {
-  const { meta } = props;
+  const { meta,_site } = props;
+  const navigation = {
+    company: [
+      { name: "About", href: "#" },
+      { name: "Blog", href: "#" },
+      { name: "Jobs", href: "#" },
+      { name: "Press", href: "#" },
+      { name: "Partners", href: "#" },
+    ],
+    help: _site?.c_helpLinks,
+    social: [
+      {
+        name: "Facebook",
+        href: "#",
+        icon: (
+          props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        ) => <Facebook {...props} />,
+      },
+      {
+        name: "Instagram",
+        href: "#",
+        icon: (
+          props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        ) => <Instagram {...props} />,
+      },
+      {
+        name: "Twitter",
+        href: "#",
+        icon: (
+          props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        ) => <Twitter {...props} />,
+      },
+      {
+        name: "GitHub",
+        href: "#",
+        icon: (
+          props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        ) => <GitHub {...props} />,
+      },
+      {
+        name: "YouTube",
+        href: "#",
+        icon: (
+          props: JSX.IntrinsicAttributes & React.SVGProps<SVGSVGElement>
+        ) => <YouTube {...props} />,
+      },
+    ],
+  };
   return (
     <>
       <footer className="site-footer" aria-labelledby="footer-heading">
@@ -99,30 +97,15 @@ const Footer = (props: FooterProps) => {
               </div>
             </div>
             <div className="footer-block">
-              <h3 className="footer-heading">Company</h3>
+              <h3 className="footer-heading">{_site?.c_helpTitle}</h3>
               <ul role="list" className="footer-links">
-                {navigation.company.map((item) => (
-                  <li key={item.name}>
+                {navigation.help && navigation.help.map((item:CTA,index:number) => (
+                  <li key={index}>
                     <a
-                      href={item.href}
+                      href={item.link}
                       className="text-sm leading-6 text-gray-600 hover:text-gray-900"
                     >
-                      {item.name}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div className="footer-block">
-              <h3 className="footer-heading">Legal</h3>
-              <ul role="list" className="footer-links">
-                {navigation.legal.map((item) => (
-                  <li key={item.name}>
-                    <a
-                      href={item.href}
-                      className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                    >
-                      {item.name}
+                      {item.label}
                     </a>
                   </li>
                 ))}

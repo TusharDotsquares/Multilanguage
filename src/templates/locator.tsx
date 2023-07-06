@@ -40,7 +40,7 @@ export const config: TemplateConfig = {
     filter: {
       entityIds: ["globaldata"],
     },
-    fields: ["id", "uid", "meta", "name", "slug","c_countryWithPrimaryAndSecondaryLanguage","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
+    fields: ["id", "uid", "meta", "name", "c_selectlanguage","c_helpTitle","c_helpLinks", "c_home","c_useMyLocation", "slug","c_countryWithPrimaryAndSecondaryLanguage","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
     localization: {
       locales: ["en", "fr", "it", "ja", "de"],
       primary: false,
@@ -197,6 +197,7 @@ const Locator: Template<LocatorTemplateProps> = ({
                     </div>
                     <ListLayout
                       showNoRecordMessage={true}
+                      c_useMyLocation={_site.c_useMyLocation}
                       meta={__meta}
                       locale={document.meta.locale}
                       extention={".html"}

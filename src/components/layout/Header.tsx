@@ -10,10 +10,7 @@ import { NavigateFunction } from 'react-router-dom';
 
 // Define the type for navigate
 export type Navigate = NavigateFunction;
-const navigation = [
-  { name: "Home", href: "/" },
-  { name: "About", href: "#" },
-];
+
 
 interface HeaderProps {
   _site?: SiteData;
@@ -27,7 +24,11 @@ interface HeaderProps {
 }
 
 const Header = (props: HeaderProps) => {
-  const { meta, locale,template,alternateLanguageFields,document } = props;
+  const { meta, locale,_site,template,alternateLanguageFields,document } = props;
+  const navigation = [
+    { name:_site?.c_home, href: "/" },
+   
+  ];
   const [languagesdata, setLanguagesData] = React.useState([]);
   const [selectedValue, setSelectedValue] = React.useState('');
   React.useEffect(() => {
@@ -70,7 +71,7 @@ const Header = (props: HeaderProps) => {
         </div>
         <div className="Chnage-language">
             <div>
-                <label htmlFor="dropdown">Select an option: </label>
+                <label htmlFor="dropdown">{_site?.c_selectlanguage} </label>
                 <select id="dropdown" value={selectedValue} onChange={updateUrl}>
                 {languagesdata.map((res,index) => {
                 return (  

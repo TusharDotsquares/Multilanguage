@@ -1,7 +1,7 @@
 import { Hours } from "@yext/search-headless-react";
 import { DirectoryParent } from "./DirectoryParent";
 import { Coordinate } from "../components/google-map/SearchProvider";
-import { AddressType } from "@yext/pages/components";
+import { AddressType, CTA } from "@yext/pages/components";
 import { DirectoryChild } from "./DirectoryChild";
 import { E164Number } from "libphonenumber-js/types";
 import { Alternatelng } from "./Locator";
@@ -19,6 +19,11 @@ export interface SiteData {
   c_thursday:string,
   c_friday:string,
   c_saturday:string,
+  c_useMyLocation:string
+  c_home:string,
+  c_selectlanguage:string,
+  c_helpLinks:CTA[],
+  c_helpTitle:string
 
 }
 export type DayOfWeekNames = [

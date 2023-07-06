@@ -13,6 +13,7 @@ interface ListLayoutProps {
   locale?: string;
   extention:string
   showNoRecordMessage?: boolean;
+  c_useMyLocation:string
 }
 
 function ListLayout({
@@ -21,12 +22,13 @@ function ListLayout({
   message = "",
   extention = "", 
   showNoRecordMessage = false,
+  c_useMyLocation
 }: ListLayoutProps) {
   const { isFilterEnable, noRecordFound } = useContext(SearchContext);
   const [activeFacet, setActiveFacet] = React.useState<number | null>(null);
   return (
     <div className="listing-block">
-      <AutoSuggestions locale={locale} />
+      <AutoSuggestions c_useMyLocation={c_useMyLocation} locale={locale} />
       {isFilterEnable && (
         <Facets
           activeFacet={activeFacet}

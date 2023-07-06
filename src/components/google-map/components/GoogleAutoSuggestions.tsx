@@ -3,7 +3,11 @@ import { useEffect, useState } from "react";
 import { SearchContext } from "../SearchProvider";
 import { SearchIcon, UseLocationIcon } from "../../../assets/svgs/SvgIcons";
 
-const GoogleAutoSuggestions = () => {
+type Searchprops={
+  c_useMyLocation:string
+}
+const GoogleAutoSuggestions = (props:Searchprops) => {
+  const {c_useMyLocation}=props
   const {
     getCoordinates,
     setInputValue,
@@ -139,7 +143,7 @@ const GoogleAutoSuggestions = () => {
             onClick={onClick}
           >
             <UseLocationIcon />
-            <span>{"Use my location"}</span>
+            <span>{c_useMyLocation ? c_useMyLocation:"Use My Location"}</span>
           </button>
         </div>
         <div className="search-form">

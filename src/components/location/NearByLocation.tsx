@@ -82,6 +82,7 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
     <div className="nearby-locations">
       <div className="container">
         <h3 className="nearby-locations-title">{t("Nearby Locations")}</h3>
+       <div className="justify-center"> 
         <Swiper spaceBetween={50} slidesPerView={3}>
           {locations.map((location) => {
            const  url= `/${locale}/${slugify(location.address.countryCode)}/${slugify(location.address.city)}/${location.slug.toString()}.html`;
@@ -119,6 +120,7 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
             );
           })}
         </Swiper>
+        </div>
         <div className="nearby-locations-actions">
           <Link href={viewMoreUrl} className="button link">
             {t("View More")}

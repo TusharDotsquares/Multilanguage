@@ -7,6 +7,7 @@ import { Alternatelng, LocatorDocument } from "../../types/Locator";
 import { slugify, updatelocale } from "../../config/GlobalFunctions";
 import {useNavigate} from 'react-router-dom';
 import { NavigateFunction } from 'react-router-dom';
+import { LayoutContext } from "./PageLayout";
 
 // Define the type for navigate
 export type Navigate = NavigateFunction;
@@ -30,7 +31,7 @@ const Header = (props: HeaderProps) => {
    
   ];
   const [languagesdata, setLanguagesData] = React.useState([]);
-  const [selectedValue, setSelectedValue] = React.useState('');
+  const { selectedValue,setSelectedValue } = React.useContext(LayoutContext);
   React.useEffect(() => {
     const parameter = locale;
     const keys = alternateLanguageFields ? Object.keys(alternateLanguageFields!) : [];
@@ -43,11 +44,11 @@ const Header = (props: HeaderProps) => {
   const updateUrl = (e: ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(e.target.value);
     const language = slugify(e.target.value); 
-    console.log('document', document)
     updatelocale(language,template,meta,document);
 
   };
-
+  let url;
+  
   return (
     <header className={`site-header ${meta.mode}`}>
       <div className="container">
@@ -59,13 +60,26 @@ const Header = (props: HeaderProps) => {
           </div>
           <div className="header-menu">
             <ul>
-              {navigation.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="">
+             {navigation.map((link) => {
+              if(meta.mode==="development"){
+                if(selectedValue ==="en"){
+                url = "?locale=" + link.href
+                }else{
+                url = "?locale=" + selectedValue
+                }
+              }else{
+                if(selectedValue ==="en"){
+                url = link.href  
+                }else{
+                  url = link.href + selectedValue 
+                }
+              }
+             return(<li key={link.href}>
+                  <Link href={url} className="">
                     {link.name}
                   </Link>
-                </li>
-              ))}
+                </li>)
+              })}
             </ul>
           </div>
         </div>

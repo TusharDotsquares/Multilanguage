@@ -3,6 +3,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 import { CityDocument, CountryDocument, LocationDocument, SiteData, StateDocument, TemplateMeta } from "../../types";
 import { Alternatelng, LocatorDocument } from "../../types/Locator";
+import { string } from "prop-types";
 
 export interface PageLayoutProps {
   children?: React.ReactNode;
@@ -15,6 +16,18 @@ export interface PageLayoutProps {
   devLink?: string;
   locale?: string;
 }
+interface LayoutContextType {
+  setSelectedValue: (value: string) => void;
+  selectedValue:string
+}
+
+export const LayoutContext = React.createContext<LayoutContextType>({
+  selectedValue:'',
+  setSelectedValue: function (): void {
+    throw new Error("Function not implemented.");
+  }
+});
+
 
 const PageLayout = ({
   children,
@@ -27,8 +40,14 @@ const PageLayout = ({
   document,
   locale,
 }: PageLayoutProps) => {
+  const [selectedValue, setSelectedValue] = React.useState('');
+  const data = {
+    selectedValue,
+    setSelectedValue
+  };
   return (
-    <div className="page-wrapper">
+    <LayoutContext.Provider value={data}>   
+     <div className="page-wrapper">
       <Header
         _site={_site}
         meta={meta}
@@ -48,6 +67,7 @@ const PageLayout = ({
         devLink={devLink}
       />
     </div>
+    </LayoutContext.Provider>
   );
 };
 

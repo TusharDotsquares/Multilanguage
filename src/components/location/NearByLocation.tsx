@@ -14,6 +14,7 @@ import {
 import { Coordinate } from "../google-map/SearchProvider";
 import { fetch } from "@yext/pages/util";
 import { useTranslation } from "react-i18next";
+import { LayoutContext } from "../layout/PageLayout";
 
 type NearbyAPIConfig = {
   endpoint:
@@ -51,6 +52,7 @@ type NearbyProps = {
 };
 
 const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
+  const { selectedValue } = React.useContext(LayoutContext);
   const [locations, setLocations] = React.useState<NearByLocationResult[]>([]);
   React.useEffect(() => {
     if (!coordinate || !apiKey) {
@@ -70,6 +72,12 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
       .catch((error) => console.error(error));
   }, [coordinate, id, apiKey]);
   const {t} = useTranslation();
+  let viewMoreUrl;
+  if(selectedValue === 'en'){
+    viewMoreUrl ="/"
+  }else{
+    viewMoreUrl = "/" + selectedValue
+  }
   return (
     <div className="nearby-locations">
       <div className="container">
@@ -112,7 +120,7 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
           })}
         </Swiper>
         <div className="nearby-locations-actions">
-          <Link href="/" className="button link">
+          <Link href={viewMoreUrl} className="button link">
             {t("View More")}
           </Link>
         </div>

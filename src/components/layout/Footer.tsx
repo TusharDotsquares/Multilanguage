@@ -96,21 +96,7 @@ const Footer = (props: FooterProps) => {
                 ))}
               </div>
             </div>
-            <div className="footer-block">
-              <h3 className="footer-heading">{_site?.c_helpTitle}</h3>
-              <ul role="list" className="footer-links">
-                {navigation.help && navigation.help.map((item:CTA,index:number) => (
-                  <li key={index}>
-                    <a
-                      href={item.link}
-                      className="text-sm leading-6 text-gray-600 hover:text-gray-900"
-                    >
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
+
           </div>
         </div>
         <div className="footer-bottom">

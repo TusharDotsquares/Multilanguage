@@ -36,7 +36,7 @@ const LocationCard = ({ location ,locale,extention}: LocationCardProps) => {
     );
     url= `${locale}/${slugify(location.rawData.address.countryCode)}/${slugify(location.rawData.address.city)}/${location.rawData.slug.toString()}`;
   } else {
-    url= `${location.rawData.slug.toString()}`;
+    url= `${location?.rawData?.slug.toString()}`;
   }
 
 

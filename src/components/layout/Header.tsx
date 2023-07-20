@@ -85,7 +85,7 @@ const Header = (props: HeaderProps) => {
         </div>
         <div className="Chnage-language">
             <div>
-                <label htmlFor="dropdown">{_site?.c_selectlanguage} </label>
+                <label htmlFor="dropdown">{_site?.c_selectlanguageHeading} </label>
                 <select id="dropdown" value={selectedValue} onChange={updateUrl}>
                 {languagesdata.map((res,index) => {
                 return (  

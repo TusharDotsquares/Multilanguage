@@ -26,6 +26,7 @@ import { getBreadcrumb } from "../config/GlobalFunctions";
 import { NearByLocationResult } from "../types/Locator";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
+import Chat from "../components/common/Chat";
 
 export const config: TemplateConfig = {
   stream: {
@@ -215,6 +216,7 @@ const Location: Template<LocationTemplateProps> = ({
                       meta={__meta}
                       locale={document.meta.locale}
                     />
+                    <Chat/>
                   </PageLayout>
                 }
               />

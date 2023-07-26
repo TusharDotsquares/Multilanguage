@@ -64,6 +64,7 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
       ...config.params,
       location: `${coordinate.latitude},${coordinate.longitude}`,
       filter: JSON.stringify({ "meta.id": { "!$eq": `${id}` } }),
+      languages:locale
     });
 
     fetch(`${config.endpoint}?${searchParams.toString()}`)

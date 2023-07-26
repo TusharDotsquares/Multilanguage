@@ -28,6 +28,7 @@ import MapWrapper from "../components/google-map/MapWrapper";
 import { withTranslation, useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
+import Chat from "../components/common/Chat";
 
 /**
  * Not required depending on your use case.
@@ -40,7 +41,7 @@ export const config: TemplateConfig = {
     filter: {
       entityIds: ["globaldata"],
     },
-    fields: ["id", "uid", "meta", "name", "c_selectlanguageHeading","c_helpTitle","c_helpLinks", "c_home","c_useMyLocation", "slug","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
+    fields: ["id", "uid", "meta", "name", "c_selectlanguage","c_helpTitle","c_helpLinks", "c_home","c_useMyLocation", "slug","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
     localization: {
       locales: ["en", "fr", "it", "ja", "de"],
       primary: false,
@@ -165,7 +166,7 @@ const Locator: Template<LocatorTemplateProps> = ({
               mapboxAccessToken={YEXT_PUBLIC_MAP_BOX_API_KEY}
               googleApiKey={YEXT_PUBLIC_GOOGLE_API_KEY}
               limit={parseInt(YEXT_PUBLIC_PAGE_LIMIT)}
-              autoLoadAllResult={true}
+              autoLoadAllResult={false}
               isUseAlternateResult={{ limit: 1, show: true }}
               mapType="google"
               autocompleteType="google"
@@ -203,11 +204,13 @@ const Locator: Template<LocatorTemplateProps> = ({
                       extention={".html"}
                     />
                   </section>
+                  <Chat/>
                 </main>
               </PageLayout>
             </SearchProvider>
             }
           />
+           
         </Routes>
       </SearchHeadlessProvider>
     </Router>

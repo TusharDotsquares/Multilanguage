@@ -21,7 +21,7 @@ export interface SiteData {
   c_saturday:string,
   c_useMyLocation:string
   c_home:string,
-  c_selectlanguageHeading:string,
+  c_selectlanguage:string,
   c_helpLinks:CTA[],
   c_helpTitle:string
 

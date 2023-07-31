@@ -73,7 +73,7 @@ export const transformProps: TransformProps<TemplateProps> = async (data) => {
 export const getPath: GetPath<TemplateProps> = ({ document, __meta }) => {
   return __meta.mode === "development"
     ? `${document.meta.locale}/${document.slug}`
-    : `${document.meta.locale == "en" ? "index.html" : `${document.locale}`}`;
+    : `${document.meta.locale == "en" ? "index.html" : `${document.locale}.html`}`;
 };
 
 /**

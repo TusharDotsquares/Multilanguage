@@ -19,11 +19,14 @@ export interface BreadcrumbsProps {
 
 const BreadcrumbItem = (props: BreadcrumbItemProps) => {
   const { name, url } = props;
-
+ console.log('url', url)
   if (url) {
     let finalUrl;
     if(name === "Home"){
-      finalUrl = url
+      if(url === 'en')
+      finalUrl = '/'
+      else
+      finalUrl = url + '.html'
     }else{
       finalUrl = url + ".html"
     }
@@ -50,7 +53,7 @@ const Breadcrumbs = (props: BreadcrumbsProps) => {
             {breadcrumbs.map(({ name, slug }, index) => {
               const isLast = index === breadcrumbs.length - 1;
               const isFirst = index === 0;
-
+                 console.log('baseUrl', baseUrl)
               return (
                 <li className="breadcrumb-item flex" key={index}>
                   {isFirst ? (

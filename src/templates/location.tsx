@@ -205,7 +205,7 @@ const Location: Template<LocationTemplateProps> = ({
                     devLink={slug}
                   >
                     <Breadcrumbs
-                      baseUrl={`/${document.meta.locale == "en" ? '':`${document.meta.locale}.html`}`}
+                      baseUrl={document.meta.locale}
                       breadcrumbs={breadcrumbs}
                     />
                     <Information document={document} _site={_site} defaultDayOfWeekNames={defaultDayOfWeekNames} />

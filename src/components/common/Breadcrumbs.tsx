@@ -22,14 +22,12 @@ const BreadcrumbItem = (props: BreadcrumbItemProps) => {
  console.log('url', url)
   if (url) {
     let finalUrl;
-    if(name === "Home"){
+
       if(url === 'en')
       finalUrl = '/'
       else
       finalUrl = url + '.html'
-    }else{
-      finalUrl = url + ".html"
-    }
+
     return (
       <Link href={finalUrl}>
         <span className="font-bold hover:underline hover:cursor-pointer">

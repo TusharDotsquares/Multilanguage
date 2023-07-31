@@ -112,7 +112,7 @@ export const updatelocale = (
       redirectUrl =`${
          locale == "en"
           ? ""
-          : `${locale}`
+          : `${locale}.html`
       }`;
     } 
   }

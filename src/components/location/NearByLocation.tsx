@@ -64,6 +64,7 @@ const NearByLocation = ({ locale, coordinate, id, apiKey }: NearbyProps) => {
       ...config.params,
       location: `${coordinate.latitude},${coordinate.longitude}`,
       filter: JSON.stringify({ "meta.id": { "!$eq": `${id}` } }),
+      savedFilterIds:YEXT_PUBLIC_SAVEDFILTERID_NEARBY,
       languages:locale
     });
 

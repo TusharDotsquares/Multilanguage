@@ -4,7 +4,7 @@
     "entityIds": ["globaldata"]
   },
   "source": "knowledgeGraph",
-  "fields": ["id", "uid", "meta", "name","c_home","c_selectlanguage","c_useMyLocation", "slug","c_helpLinks","c_helpTitle","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
+  "fields": ["id", "uid", "meta", "name","c_home","c_selectlanguageHeading","c_useMyLocation", "slug","c_helpLinks","c_helpTitle","c_sunday","c_tuesday","c_thursday","c_saturday","c_friday","c_wednesday","c_monday"],
   "localization": {
     "locales": ["en","fr", "it", "ja", "de"],
     "primary": false

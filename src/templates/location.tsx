@@ -33,6 +33,7 @@ export const config: TemplateConfig = {
     $id: "location",
     filter: {
       entityTypes: ["location"],
+      savedFilterIds:['1315509542']
     },
     fields: [
       "id",

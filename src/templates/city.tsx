@@ -180,7 +180,7 @@ const City: Template<CityTemplateProps> = ({
         devLink={slug}
       >
          <Breadcrumbs
-                      baseUrl={`/${document.meta.locale}`}
+                      baseUrl={`/${document.meta.locale == "en" ? '':`${document.meta.locale}.html`}`}
                       breadcrumbs={breadcrumbs}
                     />
         <h1>City</h1>

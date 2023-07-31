@@ -160,7 +160,7 @@ const country: Template<CountryTemplateProps> = ({
         devLink={slug}
       >
              <Breadcrumbs
-                      baseUrl={`/${document.meta.locale}`}
+                      baseUrl={`/${document.meta.locale == "en" ? '':`${document.meta.locale}.html`}`}
                       breadcrumbs={breadcrumbs}
                     />
         <h1>Country</h1>

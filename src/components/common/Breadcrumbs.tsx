@@ -21,8 +21,14 @@ const BreadcrumbItem = (props: BreadcrumbItemProps) => {
   const { name, url } = props;
 
   if (url) {
+    let finalUrl;
+    if(name === "Home"){
+      finalUrl = url
+    }else{
+      finalUrl = url + ".html"
+    }
     return (
-      <Link href={url + ".html"}>
+      <Link href={finalUrl}>
         <span className="font-bold hover:underline hover:cursor-pointer">
           {name}
         </span>

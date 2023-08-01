@@ -23,7 +23,7 @@ const BreadcrumbItem = (props: BreadcrumbItemProps) => {
   if (url) {
     let finalUrl;
 
-      if(url === 'en')
+      if(url === '/en')
       finalUrl = '/'
       else
       finalUrl = url + '.html'

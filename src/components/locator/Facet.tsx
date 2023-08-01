@@ -57,6 +57,7 @@ interface CheckboxProps {
 }
 const Checkbox = ({ option, selected, onClick }: CheckboxProps) => {
   const [isChecked, setIsChecked] = useState(selected);
+
   return (
     <div className={"input-box"}>
       <input

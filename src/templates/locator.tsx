@@ -190,8 +190,8 @@ const Locator: Template<LocatorTemplateProps> = ({
               isUseAlternateResult={{ limit: 1, show: true }}
               mapType="google"
               autocompleteType="google"
-              isFilterEnable={false}
-              isUpdateListAccordingMarkers={true}
+              isFilterEnable={true}
+              isUpdateListAccordingMarkers={false}
             >
               <PageLayout
                 _site={_site}

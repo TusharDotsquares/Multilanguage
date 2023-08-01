@@ -29,6 +29,8 @@ import { withTranslation, useTranslation } from "react-i18next";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
 import Chat from "../components/common/Chat";
+import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
+import { getBreadcrumb } from "../config/GlobalFunctions";
 
 /**
  * Not required depending on your use case.
@@ -60,9 +62,9 @@ export const config: TemplateConfig = {
  *
  * If the page is truly static this function is not necessary.
  */
-export const transformProps: TransformProps<TemplateProps> = async (data) => {
-  return { ...data };
-};
+// export const transformProps: TransformProps<TemplateProps> = async (data) => {
+//   return { ...data };
+// };
 
 /**
  * Defines the path that the generated file will live at for production.
@@ -108,8 +110,12 @@ export const getHeadConfig: GetHeadConfig<
     ],
   };
 };
+type TransformData = TemplateRenderProps & {
+  breadcrumbs: BreadcrumbItem[];
+};
 
-interface LocatorTemplateProps extends TemplateRenderProps {
+
+interface LocatorTemplateProps extends TransformData {
   __meta: TemplateMeta;
   document: LocatorDocument;
   path: string;
@@ -118,10 +124,24 @@ interface LocatorTemplateProps extends TemplateRenderProps {
  * This is the main template. It can have any name as long as it's the default export.
  * The props passed in here are the direct result from `transformProps`.
  */
+export const transformProps: TransformProps<TransformData> = async (data) => {
+  const document = data.document as LocatorDocument;
+  const directoryParents :Array<{ name: string; id: number }>=  [];
+  const breadcrumbs = getBreadcrumb(
+    directoryParents,
+    document,
+    data.__meta,
+    false,
+    1,
+    false
+  );
+  return { ...data, breadcrumbs };
+};
 const Router = typeof document !== "undefined" ? BrowserRouter : StaticRouter;
 const Locator: Template<LocatorTemplateProps> = ({
   document,
   __meta,
+  breadcrumbs,
   path,
 }: LocatorTemplateProps) => {
   const { _site, meta, alternateLanguageFields } = document;
@@ -182,6 +202,10 @@ const Locator: Template<LocatorTemplateProps> = ({
                 document={document}
                 locale={meta.locale}
               >
+                 <Breadcrumbs
+                      baseUrl={`/${document.meta.locale}`}
+                      breadcrumbs={breadcrumbs}
+                    />
                 <main className="main-content">
                   <section className="listing-map" id="main">
                     <div className="mobile-view-map lg:hidden">

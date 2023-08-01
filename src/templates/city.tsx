@@ -23,6 +23,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { StaticRouter } from "react-router-dom/server";
 import { getBreadcrumb, slugify } from "../config/GlobalFunctions";
 import Breadcrumbs, { BreadcrumbItem } from "../components/common/Breadcrumbs";
+import Chat from "../components/common/Chat";
 
 export const config: TemplateConfig = {
   stream: {
@@ -212,6 +213,7 @@ const City: Template<CityTemplateProps> = ({
               })}
           </div>
         </div>
+        <Chat/>
       </PageLayout>}/>
       </Routes>
     </div>
